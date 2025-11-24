@@ -4,6 +4,13 @@ const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");  
 const list   = document.getElementById("missing-list");
 
+input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+        button.click();
+    }
+}); // for enter click
+
+
 button.addEventListener("click", () =>{
 
     if (input.value.trim() === "") {
@@ -25,6 +32,8 @@ button.addEventListener("click", () =>{
 
     input.value = "";  // To clears the input so user can type a new item 
 
+    
+
 });
 
 //Weekly meal section 
@@ -32,7 +41,15 @@ button.addEventListener("click", () =>{
 const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
-const mealDay = document.getElementById("meal-day"); // NEW
+const mealDay = document.getElementById("meal-day"); 
+
+mealInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    mealButton.click();      // meal section button
+  }
+}); // for enter click 
+
 
 mealButton.addEventListener("click", () => {
     
@@ -60,10 +77,18 @@ mealButton.addEventListener("click", () => {
     mealDay.value = ""; // reset day
 });
 
-
+// Grocery section 
 const groceryInput = document.getElementById("grocery-input");
 const groceryButton = document.getElementById("grocery-button");
 const groceryList = document.getElementById("grocery-list");
+
+groceryInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    groceryButton.click();   // grocery section button
+  }
+});  // for enter click 
+
 
 groceryButton.addEventListener("click" , () =>{
     if (groceryInput.value.trim() === "") {
