@@ -1,4 +1,22 @@
 //Missing items section
+// Connect GET 
+
+const API_URL = "http://localhost:3000/api/items";
+
+async function loadItems() {
+    const res = await fetch(API_URL)
+    const items = await res.json();
+
+    console.log("Items from backend: items");
+    renderItems(items);
+    
+loadItems();
+    
+}
+
+
+
+
 
 const input = document.getElementById("missing-input"); 
 const button = document.getElementById("missing-item");  
