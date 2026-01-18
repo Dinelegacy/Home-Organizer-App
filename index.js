@@ -4,15 +4,23 @@
 const API_URL = "http://localhost:3000/api/items";
 
 async function loadItems() {
-    const res = await fetch(API_URL)
-    const items = await res.json();
+    const res = await fetch("http://localhost:3000/api/items")
+    const data = await res.json();
 
-    console.log("Items from backend: items");
-    renderItems(items);
+    list.innerHTML = "";
+
+    data.forEach(item  => {
+        const li = document.createElement("li");
+        li.textContent = item.text;
+
+        list.appendChild(li);
+        
+    });
     
-loadItems();
     
 }
+
+loadItems();
 
 
 
