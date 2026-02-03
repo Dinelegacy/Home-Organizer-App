@@ -13,6 +13,7 @@ The frontend provides a simple interface for managing grocery items and meals.
 
 ## 📁 Project Structure
 
+```
 Home-organizer-app/
 
 backend/
@@ -38,16 +39,19 @@ frontend/
 ├── index.html
 └── index.js
 
-.gitignore  
+.gitignore
 README.md
+```
 
 ---
 
 ## 🚀 Clone & Run Locally
 
-git clone https://github.com/Dinelegacy/Home-Organizer-App.git  
-cd Home-organizer-app/backend  
-npm install  
+```bash
+git clone https://github.com/Dinelegacy/Home-Organizer-App.git
+cd Home-organizer-app/backend
+npm install
+```
 
 ---
 
@@ -55,104 +59,118 @@ npm install
 
 Create file:
 
+```
 backend/.env
+```
 
 Add:
 
-PORT=3000  
-MONGODB_URI=mongodb://localhost:27017/homeOrganizer  
-JWT_SECRET=create_your_jwt_secret_here  
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/homeOrganizer
+JWT_SECRET=create_your_jwt_secret_here
+```
 
 ---
 
 ## 🗄 Start MongoDB
 
+```bash
 mongod
+```
 
 ---
 
 ## ▶️ Start Server
 
-npm start  
+```bash
+npm start
+```
 
-or  
+or
 
-nodemon server.js  
+```bash
+nodemon server.js
+```
 
-API runs on:
+API runs at:
 
+```
 http://localhost:3000
-
----
-
-## 🔑 Authentication Flow
-
-Register user (email must be unique):
-
-POST /api/users/register  
-
-Login to get token:
-
-POST /api/users/login  
-
-Use token in requests:
-
-Authorization: Bearer YOUR_JWT_TOKEN
+```
 
 ---
 
 ## 📡 API Endpoints
 
-Auth  
-POST /api/users/register  
-POST /api/users/login  
+### Authentication
 
-Items (JWT required)  
-GET /api/items  
-POST /api/items  
-PATCH /api/items/:id  
-DELETE /api/items/:id  
+```
+POST /api/users/register
+POST /api/users/login
+```
 
-POST example:
+After login, use the JWT token to access protected routes.
 
+---
+
+### Items (grocery list – JWT required)
+
+```
+GET    /api/items
+POST   /api/items
+PATCH  /api/items/:id
+DELETE /api/items/:id
+```
+
+Request body example:
+
+```json
 {
   "text": "Milk"
 }
+```
 
-Meals (JWT required)  
-GET /api/meals  
-POST /api/meals  
-PATCH /api/meals/:id  
-DELETE /api/meals/:id  
+---
 
-POST example:
+### Meals (weekly planning – JWT required)
 
+```
+GET    /api/meals
+POST   /api/meals
+PATCH  /api/meals/:id
+DELETE /api/meals/:id
+```
+
+Request body example:
+
+```json
 {
   "day": "Monday",
-  "text": "Chicken and rice"
+  "text": "Chicken rice"
 }
+```
 
 ---
 
 ## 📊 Status Codes Used
 
-200 OK  
-201 Created  
-400 Bad Request  
-401 Unauthorized  
-404 Not Found  
-500 Server Error  
+- 200 OK  
+- 201 Created  
+- 400 Bad Request  
+- 401 Unauthorized  
+- 404 Not Found  
+- 500 Server Error  
 
 ---
 
 ## ✨ Features
 
-MongoDB database  
-RESTful API  
-Multiple HTTP methods  
-Multiple status codes  
-JWT authentication  
-bcrypt password hashing  
-Protected routes  
-Scalable backend design  
-Frontend included
+- MongoDB database
+- RESTful API
+- JWT authentication
+- bcrypt password hashing
+- Protected routes
+- CRUD operations
+- Clean scalable structure
+- Frontend included
