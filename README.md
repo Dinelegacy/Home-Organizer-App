@@ -101,16 +101,62 @@ http://localhost:3000
 
 ---
 
+## 🔑 Authentication Flow
+
+### 1️⃣ Register user (email must be unique)
+
+```
+POST /api/users/register
+```
+
+Request body example:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "mypassword"
+}
+```
+
+---
+
+### 2️⃣ Login to receive JWT token
+
+```
+POST /api/users/login
+```
+
+Request body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "mypassword"
+}
+```
+
+Response returns token.
+
+---
+
+### 3️⃣ Use token for protected routes
+
+Add header:
+
+```
+Authorization: Bearer YOUR_JWT_TOKEN
+```
+
+---
+
 ## 📡 API Endpoints
 
-### Authentication
+### Auth
 
 ```
 POST /api/users/register
 POST /api/users/login
 ```
-
-After login, use the JWT token to access protected routes.
 
 ---
 
@@ -123,7 +169,7 @@ PATCH  /api/items/:id
 DELETE /api/items/:id
 ```
 
-Request body example:
+POST example:
 
 ```json
 {
@@ -133,7 +179,7 @@ Request body example:
 
 ---
 
-### Meals (weekly planning – JWT required)
+### Meals (weekly meal planning – JWT required)
 
 ```
 GET    /api/meals
@@ -142,12 +188,12 @@ PATCH  /api/meals/:id
 DELETE /api/meals/:id
 ```
 
-Request body example:
+POST example:
 
 ```json
 {
   "day": "Monday",
-  "text": "Chicken rice"
+  "text": "Chicken and rice"
 }
 ```
 
@@ -168,9 +214,10 @@ Request body example:
 
 - MongoDB database
 - RESTful API
+- Multiple HTTP methods (GET, POST, PATCH, DELETE)
+- Multiple HTTP status codes
 - JWT authentication
 - bcrypt password hashing
 - Protected routes
-- CRUD operations
-- Clean scalable structure
+- Scalable backend design
 - Frontend included
