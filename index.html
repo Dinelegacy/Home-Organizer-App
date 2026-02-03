@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Organizer App</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<h1>Home Organizer App</h1>
+
+    <section>  
+  <h2>Missing Items in the House</h2>
+  <input type="text" id="missing-input" placeholder="What is missing?">
+  <button id="missing-item">Add</button>
+  <ul id="missing-list"></ul>
+</section>
+
+<section>
+  <h2>Weekly Meals</h2>
+  <select id="meal-day">
+    <option value="">Select day</option>
+    <option value="Monday">Monday</option>
+    <option value="Tuesday">Tuesday</option>
+    <option value="Wednesday">Wednesday</option>
+    <option value="Thursday">Thursday</option>
+    <option value="Friday">Friday</option>
+    <option value="Saturday">Saturday</option>
+    <option value="Sunday">Sunday</option>
+  </select> 
+
+  <input type="text" id="meal-input" placeholder="What you will eat">
+  <button id="meal-button">Add</button>
+  <ul id="meal-list"></ul>
+</section>
+
+
+<section>
+  <h2>Grocery List</h2>
+  <input type="text" id="grocery-input" placeholder="Item to buy">
+  <button id="grocery-button">Add</button>
+  <ul id="grocery-list"></ul>
+</section>
+
+    
+    <script src="index.js"></script>
+</body>
+</html>
