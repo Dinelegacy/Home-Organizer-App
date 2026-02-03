@@ -1,3 +1,34 @@
+## Project Structure
+
+Home-organizer-app/
+
+backend/
+├── middleware/
+│   └── authRequired.js
+├── node_modules/
+├── routes/
+│   ├── items.js
+│   ├── meals.js
+│   └── users.js
+├── .env
+├── .env.example
+├── db.js
+├── package-lock.json
+├── package.json
+├── server.js
+└── test.http
+
+frontend/
+├── .vscode/
+├── assets/
+├── index.css
+├── index.html
+└── index.js
+
+.gitignore
+README.md
+
+
 Home Organizer App – Full Stack Project (Backend API + Frontend)
 
 This web application helps users organize home life by:
