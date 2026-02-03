@@ -13,7 +13,8 @@ The frontend provides a simple interface for managing grocery items and meals.
 
 ## 📁 Project Structure
 
-📁 Home-organizer-app/
+```
+Home-organizer-app/
 
 backend/
 ├── middleware/
@@ -26,8 +27,8 @@ backend/
 ├── .env
 ├── .env.example
 ├── db.js
-├── package.json
 ├── package-lock.json
+├── package.json
 ├── server.js
 └── test.http
 
@@ -40,80 +41,114 @@ frontend/
 
 .gitignore
 README.md
----
-
-## 🚀 Clone and Run Locally
-
-git clone https://github.com/Dinelegacy/Home-Organizer-App.git  
-cd Home-organizer-app/backend  
-npm install  
+```
 
 ---
 
-## 🔐 Create backend/.env file with:
+## 🚀 Clone & Run Locally
 
-PORT=3000  
-MONGODB_URI=mongodb://localhost:27017/homeOrganizer  
-JWT_SECRET=create_your_jwt_secret_here  
+```bash
+git clone https://github.com/Dinelegacy/Home-Organizer-App.git
+cd Home-organizer-app/backend
+npm install
+```
+
+---
+
+## 🔐 Environment Setup
+
+Create a file:
+
+```
+backend/.env
+```
+
+Add:
+
+```env
+PORT=3000
+MONGODB_URI=mongodb://localhost:27017/homeOrganizer
+JWT_SECRET=create_your_jwt_secret_here
+```
 
 ---
 
 ## 🗄 Start MongoDB
 
-mongod  
+```bash
+mongod
+```
 
 ---
 
-## ▶ Start the server
+## ▶️ Start the Server
 
-npm start  
-or  
-nodemon server.js  
+```bash
+npm start
+```
 
-API runs on:  
-http://localhost:3000  
+or
 
----
+```bash
+nodemon server.js
+```
 
-## 📡 Endpoints
+API runs on:
 
-Auth:  
-POST /api/users/register  
-POST /api/users/login  
-
-Items (grocery list – JWT required):  
-GET /api/items  
-POST /api/items  
-PATCH /api/items/:id  
-DELETE /api/items/:id  
-
-Meals (weekly meal planning – JWT required):  
-GET /api/meals  
-POST /api/meals  
-PATCH /api/meals/:id  
-DELETE /api/meals/:id  
+```
+http://localhost:3000
+```
 
 ---
 
-## 📊 Status codes used
+## 📡 API Endpoints
 
-200 OK  
-201 Created  
-400 Bad Request  
-401 Unauthorized  
-404 Not Found  
-500 Server Error  
+### Auth
+
+```
+POST /api/users/register
+POST /api/users/login
+```
+
+### Items (grocery list – JWT required)
+
+```
+GET    /api/items
+POST   /api/items
+PATCH  /api/items/:id
+DELETE /api/items/:id
+```
+
+### Meals (weekly meal planning – JWT required)
+
+```
+GET    /api/meals
+POST   /api/meals
+PATCH  /api/meals/:id
+DELETE /api/meals/:id
+```
+
+---
+
+## 📊 Status Codes Used
+
+- 200 OK  
+- 201 Created  
+- 400 Bad Request  
+- 401 Unauthorized  
+- 404 Not Found  
+- 500 Server Error  
 
 ---
 
 ## ✨ Features
 
-MongoDB database  
-RESTful API  
-Multiple HTTP methods (GET, POST, PATCH, DELETE)  
-Multiple HTTP status codes  
-JWT authentication  
-bcrypt password hashing  
-Protected routes  
-Structured and scalable backend design  
-Frontend included  
+- MongoDB database
+- RESTful API
+- Multiple HTTP methods (GET, POST, PATCH, DELETE)
+- Multiple HTTP status codes
+- JWT authentication
+- bcrypt password hashing
+- Protected routes
+- Structured and scalable backend design
+- Frontend included
