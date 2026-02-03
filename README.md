@@ -13,7 +13,7 @@ The frontend provides a simple interface for managing grocery items and meals.
 
 ## 📁 Project Structure
 
-Home-organizer-app/
+📁 Home-organizer-app/
 
 backend/
 ├── middleware/
@@ -26,8 +26,8 @@ backend/
 ├── .env
 ├── .env.example
 ├── db.js
-├── package-lock.json
 ├── package.json
+├── package-lock.json
 ├── server.js
 └── test.http
 
@@ -38,9 +38,8 @@ frontend/
 ├── index.html
 └── index.js
 
-.gitignore  
-README.md  
-
+.gitignore
+README.md
 ---
 
 ## 🚀 Clone and Run Locally
