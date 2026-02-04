@@ -21,7 +21,11 @@ router.get("/", authRequired, async (req, res) => {
 router.post("/", authRequired, async (req, res) => {
   try {
     const { day, text } = req.body || {};
+    const ValidDays = ["Monday","Tuesday", "Wednesday", "Thursday", "friday", "saturday", "Sunday"]
 
+    if (!ValidDays.includes(req.body.day)){
+      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
+    }
     if (!day || !text) {
       return res.status(400).json({ message: "Day and text are required" });
     }
@@ -43,6 +47,11 @@ router.post("/", authRequired, async (req, res) => {
 router.patch("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
+    const ValidDays = ["Monday","Tuesday", "Wednesday", "Thursday", "friday", "saturday", "Sunday"]
+
+    if (!ValidDays.includes(req.body.day)){
+      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
+    }
 
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid id" });
