@@ -66,11 +66,11 @@ router.post("/", authRequired , async (req, res) => {
       return res.status(409).json({ message: "Item already exists" }); // 409 = conflict
     }
 
-    // UPDATED store both clean text and normalized version
+    //  store both clean text and normalized version
     const doc = { 
       userId: req.user.userId, 
-      text: cleanText,                // what user sees
-      textNormalized: normalizedText, // for duplicate checking
+      text: cleanText,                
+      textNormalized: normalizedText, 
       createdAt: new Date() 
     };
 
@@ -84,7 +84,7 @@ router.post("/", authRequired , async (req, res) => {
   }
 });
 
-// PATCH item
+// PATCH item 
 router.patch("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
@@ -97,13 +97,31 @@ router.patch("/:id", authRequired, async (req, res) => {
       return res.status(400).json({ message: "Text is required" });
     }
 
+    // normalize new text 
+    const text = String(req.body.text).trim();
+    const textNormalized = text.toLowerCase();
+
+    if (!text) {
+      return res.status(400).json({ message: "Text is required" });
+    }
+
+    const duplicate = await itemsCollection(req).findOne({
+      userId: req.user.userId,
+      textNormalized,
+      _id: { $ne: new ObjectId(id) }, 
+    });
+
+    if (duplicate) {
+      return res.status(409).json({ message: "Item already exists" });
+    }
+
     const result = await itemsCollection(req).findOneAndUpdate(
-      { _id: new ObjectId(id), userId: req.user.userId},
-      { $set: { text: req.body.text } },
+      { _id: new ObjectId(id), userId: req.user.userId },
+      { $set: { text, textNormalized, updatedAt: new Date() } },
       { returnDocument: "after" }
     );
 
-    if (!result){
+    if (!result) {
       return res.status(404).json({ message: "Item not found" });
     }
 
@@ -113,7 +131,6 @@ router.patch("/:id", authRequired, async (req, res) => {
     res.status(500).json({ message: "Database error" });
   }
 });
-
 // DELETE item
 router.delete("/:id", authRequired, async (req, res) => {
   try {
