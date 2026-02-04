@@ -20,18 +20,26 @@ router.get("/", authRequired, async (req, res) => {
 // POST meal
 router.post("/", authRequired, async (req, res) => {
   try {
-    const { day, text } = req.body || {};
-    const ValidDays = ["Monday","Tuesday", "Wednesday", "Thursday", "friday", "saturday", "Sunday"]
+    const dayValue = req.body?.day || req.body?.Day;
+    const text = req.body?.text;
+  
 
-    if (!ValidDays.includes(req.body.day)){
-      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
-    }
-    if (!day || !text) {
+   if (!dayValue || !text) {
       return res.status(400).json({ message: "Day and text are required" });
     }
 
+    const ValidDays = ["monday","tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+    const normalizedDay = dayValue.trim().toLowerCase();
+
+    if (!ValidDays.includes(normalizedDay)){
+      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
+    }
+
+    const cleanDay = normalizedDay.charAt(0).toUpperCase() + normalizedDay.slice(1);
+
     const doc = { userId: req.user.userId,
-         day, 
+         day: cleanDay,
          text,
          createdAt: new Date() };
     const result = await mealsCollection(req).insertOne(doc);
@@ -47,19 +55,28 @@ router.post("/", authRequired, async (req, res) => {
 router.patch("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
-    const ValidDays = ["Monday","Tuesday", "Wednesday", "Thursday", "friday", "saturday", "Sunday"]
-
-    if (!ValidDays.includes(req.body.day)){
-      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
-    }
-
+     const dayValue = req.body?.day || req.body?.Day
+    const text = req.body?.text
+  
     if (!ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid id" });
     }
 
-    const set = {};
-    if (req.body?.day) set.day = req.body.day;
-    if (req.body?.text) set.text = req.body.text;
+      const set = {};
+   
+   if (dayValue) {
+    const ValidDays = ["monday","tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    const normalizedDay = dayValue.trim().toLowerCase();
+    
+    if (!ValidDays.includes(normalizedDay)){
+      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
+    }
+      const cleanDay = normalizedDay.charAt (0).toUpperCase() + normalizedDay.slice(1);
+      set.day = cleanDay;
+   }
+      if (text){
+        set.text = text;
+      }
 
     if (Object.keys(set).length === 0) {
       return res.status(400).json({ message: "Nothing to update" });
