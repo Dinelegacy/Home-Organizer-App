@@ -17,6 +17,32 @@ router.get("/", authRequired, async (req, res) => {
   }
 });
 
+// GET single meal by id
+router.get("/:id", authRequired, async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid id" });
+    }
+
+    const meal = await mealsCollection(req).findOne({
+      _id: new ObjectId(id),
+      userId: req.user.userId
+    });
+
+    if (!meal) {
+      return res.status(404).json({ message: "Meal not found" });
+    }
+
+    res.status(200).json(meal);
+
+  } catch (error) {
+    console.error("DB ERROR (GET MEAL):", error);
+    res.status(500).json({ message: "Database error" });
+  }
+});
+
 // POST meal
 router.post("/", authRequired, async (req, res) => {
   try {
