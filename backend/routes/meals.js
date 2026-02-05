@@ -6,7 +6,6 @@ const router = express.Router();
 
 const mealsCollection = (req) => req.db.collection("meals");
 
-// GET all meals
 router.get("/", authRequired, async (req, res) => {
   try {
     const meals = await mealsCollection(req).find({ userId: req.user.userId }).toArray();
@@ -17,7 +16,6 @@ router.get("/", authRequired, async (req, res) => {
   }
 });
 
-// GET single meal by id
 router.get("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
@@ -43,7 +41,6 @@ router.get("/:id", authRequired, async (req, res) => {
   }
 });
 
-// POST meal
 router.post("/", authRequired, async (req, res) => {
   try {
     const dayValue = req.body?.day;
@@ -99,7 +96,6 @@ router.post("/", authRequired, async (req, res) => {
   }
 });
 
-// PATCH meal
 router.patch("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
@@ -147,7 +143,6 @@ router.patch("/:id", authRequired, async (req, res) => {
   }
 });
 
-// DELETE meal
 router.delete("/:id", authRequired, async (req, res) => {
   try {
     const id = req.params.id;
