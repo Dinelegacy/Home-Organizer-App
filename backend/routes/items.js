@@ -44,7 +44,7 @@ router.get("/:id", authRequired, async (req, res) => {
 
 
 // POST item  (prevent duplicate items per user)
-router.post("/", authRequired , async (req, res) => {
+router.post("/", authRequired, async (req, res) => {
   try {
 
     // existing validation 
@@ -67,11 +67,11 @@ router.post("/", authRequired , async (req, res) => {
     }
 
     //  store both clean text and normalized version
-    const doc = { 
-      userId: req.user.userId, 
-      text: cleanText,                
-      textNormalized: normalizedText, 
-      createdAt: new Date() 
+    const doc = {
+      userId: req.user.userId,
+      text: cleanText,
+      textNormalized: normalizedText,
+      createdAt: new Date()
     };
 
     const result = await itemsCollection(req).insertOne(doc);
@@ -108,7 +108,7 @@ router.patch("/:id", authRequired, async (req, res) => {
     const duplicate = await itemsCollection(req).findOne({
       userId: req.user.userId,
       textNormalized,
-      _id: { $ne: new ObjectId(id) }, 
+      _id: { $ne: new ObjectId(id) },
     });
 
     if (duplicate) {

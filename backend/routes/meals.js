@@ -9,7 +9,7 @@ const mealsCollection = (req) => req.db.collection("meals");
 // GET all meals
 router.get("/", authRequired, async (req, res) => {
   try {
-    const meals = await mealsCollection(req).find({userId: req.user.userId}).toArray();
+    const meals = await mealsCollection(req).find({ userId: req.user.userId }).toArray();
     res.status(200).json(meals);
   } catch (error) {
     console.error("DB ERROR (GET MEALS):", error);
@@ -48,23 +48,23 @@ router.post("/", authRequired, async (req, res) => {
   try {
     const dayValue = req.body?.day;
     const text = req.body?.text;
-  
 
-   if (!dayValue || !text) {
+
+    if (!dayValue || !text) {
       return res.status(400).json({ message: "Day and text are required" });
     }
 
-    const validDays = ["monday","tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    const validDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
     const normalizedDay = dayValue.trim().toLowerCase();
 
-    if (!validDays.includes(normalizedDay)){
-      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
+    if (!validDays.includes(normalizedDay)) {
+      return res.status(400).json({ message: "Invalid day. Use Monday-Sunday." })
     }
 
     const cleanDay = normalizedDay.charAt(0).toUpperCase() + normalizedDay.slice(1);
 
-     const existing = await mealsCollection(req).findOne({
+    const existing = await mealsCollection(req).findOne({
       userId: req.user.userId,
       day: cleanDay,
     });
@@ -84,10 +84,12 @@ router.post("/", authRequired, async (req, res) => {
       });
     }
 
-    const doc = { userId: req.user.userId,
-         day: cleanDay,
-         text,
-         createdAt: new Date() };
+    const doc = {
+      userId: req.user.userId,
+      day: cleanDay,
+      text,
+      createdAt: new Date()
+    };
     const result = await mealsCollection(req).insertOne(doc);
 
     res.status(201).json({ _id: result.insertedId, ...doc });
@@ -108,28 +110,28 @@ router.patch("/:id", authRequired, async (req, res) => {
       return res.status(400).json({ message: "Invalid id" });
     }
 
-      const set = {};
-   
-   if (dayValue) {
-    const validDays = ["monday","tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-    const normalizedDay = dayValue.trim().toLowerCase();
+    const set = {};
 
-    if (!validDays.includes(normalizedDay)){
-      return res.status(400).json({message: "Invalid day. Use Monday-Sunday."})
-    }
+    if (dayValue) {
+      const validDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+      const normalizedDay = dayValue.trim().toLowerCase();
+
+      if (!validDays.includes(normalizedDay)) {
+        return res.status(400).json({ message: "Invalid day. Use Monday-Sunday." })
+      }
       const cleanDay = normalizedDay.charAt(0).toUpperCase() + normalizedDay.slice(1);
       set.day = cleanDay;
-   }
-      if (text){
-        set.text = text;
-      }
+    }
+    if (text) {
+      set.text = text;
+    }
 
     if (Object.keys(set).length === 0) {
       return res.status(400).json({ message: "Nothing to update" });
     }
 
     const result = await mealsCollection(req).findOneAndUpdate(
-      { _id: new ObjectId(id) , userId: req.user.userId}, 
+      { _id: new ObjectId(id), userId: req.user.userId },
       { $set: set },
       { returnDocument: "after" }
     );
@@ -137,7 +139,7 @@ router.patch("/:id", authRequired, async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Meal not found" });
     }
-   return res.status(200).json(result);
+    return res.status(200).json(result);
 
   } catch (error) {
     console.error("DB ERROR (PATCH MEALS):", error);
