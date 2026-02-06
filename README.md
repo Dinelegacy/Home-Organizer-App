@@ -1,223 +1,241 @@
-# 🏠 Home Organizer App – Full Stack Project (Backend API + Frontend)
+# Home Organizer API – Backend with Frontend Integration
 
-This web application helps users organize home life by:
+This project is a REST API that manages grocery items and weekly meals, with user authentication and structured data handling.
 
-- Tracking missing grocery items (shopping list)
-- Planning weekly meals by selecting a day and adding meal names
-- Keeping user data private through authentication
+The backend is designed to be secure, consistent, and easy to maintain. The API enforces authentication, validates input, prevents duplicate records, and manages structured resources for users, items, and meals.
 
-The backend is a RESTful API connected to MongoDB and secured with JWT.  
-The frontend provides a simple interface for managing grocery items and meals.
+--- 
 
----
+## Project Overview
 
-## 📁 Project Structure
+The API is built around three main resources:
 
-```
-Home-organizer-app/
+- Users  
+- Items (grocery list)  
+- Meals (weekly meal planning)  
 
-backend/
-├── middleware/
-│   └── authRequired.js
-├── node_modules/
-├── routes/
-│   ├── items.js
-│   ├── meals.js
-│   └── users.js
-├── .env
-├── .env.example
-├── db.js
-├── package-lock.json
-├── package.json
-├── server.js
-└── test.http
-
-frontend/
-├── .vscode/
-├── assets/
-├── index.css
-├── index.html
-└── index.js
-
-.gitignore
-README.md
-```
+Each user has isolated data and must be authenticated to access protected routes.
 
 ---
 
-## 🚀 Clone & Run Locally
+## Authentication and Security
 
-```bash
-git clone https://github.com/Dinelegacy/Home-Organizer-App.git
-cd Home-organizer-app/backend
-npm install
-```
+Users register with an email and password.
 
----
+Passwords are never stored in plain text. They are hashed using bcrypt before being saved in MongoDB.
 
-## 🔐 Environment Setup
+When logging in, a JSON Web Token (JWT) is generated and returned to the client.
 
-Create file:
+All item and meal routes are protected and require a valid token sent in the request header:
 
-```
-backend/.env
-```
-
-Add:
-
-```env
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/homeOrganizer
-JWT_SECRET=create_your_jwt_secret_here
-```
-
----
-
-## 🗄 Start MongoDB
-
-```bash
-mongod
-```
-
----
-
-## ▶️ Start Server
-
-```bash
-npm start
-```
-
-or
-
-```bash
-nodemon server.js
-```
-
-API runs at:
-
-```
-http://localhost:3000
-```
-
----
-
-## 🔑 Authentication Flow
-
-### 1️⃣ Register user (email must be unique)
-
-```
-POST /api/users/register
-```
-
-Request body example:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "mypassword"
-}
-```
-
----
-
-### 2️⃣ Login to receive JWT token
-
-```
-POST /api/users/login
-```
-
-Request body:
-
-```json
-{
-  "email": "user@example.com",
-  "password": "mypassword"
-}
-```
-
-Response returns token.
-
----
-
-### 3️⃣ Use token for protected routes
-
-Add header:
-
-```
 Authorization: Bearer YOUR_JWT_TOKEN
-```
+
+This ensures:
+
+- Secure access to the API  
+- Private user-specific data  
+
 
 ---
 
-## 📡 API Endpoints
+### Input Normalization
 
-### Auth
+User input is processed before storage:
 
-```
-POST /api/users/register
-POST /api/users/login
-```
+- Whitespace is trimmed  
+- Case is normalized for comparisons  
+
+This prevents inconsistent records such as duplicates caused by casing differences.
 
 ---
 
-### Items (grocery list – JWT required)
+### Grocery Items – Duplicate Prevention
 
-```
-GET    /api/items
-POST   /api/items
-PATCH  /api/items/:id
-DELETE /api/items/:id
-```
+Items are normalized using a lowercase comparison field.
+
+Examples treated as the same item:
+
+Milk  
+milk  
+MILK  
+
+Only one instance can exist per user.
+
+Attempting to add a duplicate returns:
+
+409 Conflict
+
+This keeps grocery lists realistic and avoids redundant data.
+
+---
+
+### Meals – One Meal Per Day
+
+Each user can only have one meal per weekday.
+
+When posting a meal:
+
+- If the day does not exist → a new meal is created  
+- If the day already exists → the existing meal is updated  
+
+This reflects real meal planning instead of behaving like a simple list.
+
+Patch requests also prevent changing a meal into a day that already belongs to another meal.
+
+---
+
+## Backend Architecture
+
+The backend is organized with clear separation of responsibilities.
+
+### Server Layer
+- require("dotenv").config();
+- app.use(cors());
+- app.use(express.json());
+- db = await connectDB();
+- req.db = db;
+- app.use("/api/items", items);
+- app.use("/api/meals", meals);
+- app.use("/api/users", users);
+
+---
+
+### Database Layer
+
+db.js creates the MongoDB connection and makes it available to all routes through req.db
+---
+
+### Route Layer
+
+Each resource has its own dedicated file:
+
+- users.js – registration and login  
+- items.js – grocery item logic  
+- meals.js – meal planning logic  
+
+Each resource is separated into its own route file, making the API easier to maintain and update without affecting other parts of the system
+
+---
+
+### Middleware
+
+authRequired.js validates JWT tokens and protects all private routes.
+
+---
+
+### Utility Functions
+
+Repeated validation and normalization logic is extracted into reusable helper functions inside a utils folder.
+
+This reduces code repetition and improves maintainability and scalability.
+
+---
+
+## API Endpoints
+
+Authentication
+
+POST /api/users/register  
+POST /api/users/login  
+
+
+Items (JWT required)
+
+GET /api/items  
+GET /api/items/:id  
+POST /api/items  
+PATCH /api/items/:id  
+DELETE /api/items/:id  
+
+
+Meals (JWT required)
+
+GET /api/meals  
+GET /api/meals/:id  
+POST /api/meals  
+PATCH /api/meals/:id  
+DELETE /api/meals/:id  
 
 POST example:
 
-```json
 {
   "text": "Milk"
 }
-```
+
+Duplicate items return 409 Conflict.
 
 ---
 
-### Meals (weekly meal planning – JWT required)
+### Meals (JWT required)
 
-```
-GET    /api/meals
-POST   /api/meals
-PATCH  /api/meals/:id
-DELETE /api/meals/:id
-```
+GET /api/meals  
+GET /api/meals/:id  
+POST /api/meals  
+PATCH /api/meals/:id  
+DELETE /api/meals/:id  
 
 POST example:
 
-```json
 {
   "day": "Monday",
   "text": "Chicken and rice"
 }
-```
+
+Invalid days return 400 Bad Request.  
+Duplicate weekdays update instead of creating new records.
 
 ---
 
-## 📊 Status Codes Used
+## HTTP Status Codes Used
 
-- 200 OK  
-- 201 Created  
-- 400 Bad Request  
-- 401 Unauthorized  
-- 404 Not Found  
-- 500 Server Error  
+200 OK  
+201 Created  
+400 Bad Request  
+401 Unauthorized  
+404 Not Found  
+409 Conflict  
+500 Server Error  
+
+All responses follow REST conventions for smooth frontend integration.
 
 ---
 
-## ✨ Features
+## Running the Project Locally
 
-- MongoDB database
-- RESTful API
-- Multiple HTTP methods (GET, POST, PATCH, DELETE)
-- Multiple HTTP status codes
-- JWT authentication
-- bcrypt password hashing
-- Protected routes
-- Scalable backend design
-- Frontend included
+Clone the repository:
+
+git clone https://github.com/Dinelegacy/Home-Organizer-App.git  
+cd Home-organizer-app/backend  
+npm install  
+
+Create backend/.env:
+
+PORT=3000  
+MONGODB_URI=mongodb://localhost:27017/homeOrganizer  
+JWT_SECRET=create_your_jwt_secret_here  
+
+Start MongoDB:
+
+mongod  
+
+Start the server:
+
+npm start  
+
+or for development:
+
+npm run dev  
+
+The API runs at:
+
+http://localhost:3000
+
+---
+
+## Technologies Used
+
+Node.js  
+Express.js  
+MongoDB  
+JWT authentication  
+bcrypt password hashing  
