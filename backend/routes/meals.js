@@ -1,14 +1,17 @@
 const authRequired = require("../middleware/authRequired");
 const express = require("express");
-const { ObjectId } = require("mongodb");
 
 const router = express.Router();
+
+const { getObjectIdOr400, getCleanDayOr400 } = require("../utils/routeHelpers");
 
 const mealsCollection = (req) => req.db.collection("meals");
 
 router.get("/", authRequired, async (req, res) => {
   try {
-    const meals = await mealsCollection(req).find({ userId: req.user.userId }).toArray();
+    const meals = await mealsCollection(req)
+      .find({ userId: req.user.userId })
+      .toArray();
     res.status(200).json(meals);
   } catch (error) {
     console.error("DB ERROR (GET MEALS):", error);
@@ -18,15 +21,12 @@ router.get("/", authRequired, async (req, res) => {
 
 router.get("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
 
     const meal = await mealsCollection(req).findOne({
-      _id: new ObjectId(id),
-      userId: req.user.userId
+      _id,
+      userId: req.user.userId,
     });
 
     if (!meal) {
@@ -34,7 +34,6 @@ router.get("/:id", authRequired, async (req, res) => {
     }
 
     res.status(200).json(meal);
-
   } catch (error) {
     console.error("DB ERROR (GET MEAL):", error);
     res.status(500).json({ message: "Database error" });
@@ -43,23 +42,14 @@ router.get("/:id", authRequired, async (req, res) => {
 
 router.post("/", authRequired, async (req, res) => {
   try {
-    const dayValue = req.body?.day;
+    const cleanDay = getCleanDayOr400(req, res);
+    if (!cleanDay) return;
+
     const text = req.body?.text;
 
-
-    if (!dayValue || !text) {
+    if (!text) {
       return res.status(400).json({ message: "Day and text are required" });
     }
-
-    const validDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-
-    const normalizedDay = dayValue.trim().toLowerCase();
-
-    if (!validDays.includes(normalizedDay)) {
-      return res.status(400).json({ message: "Invalid day. Use Monday-Sunday." })
-    }
-
-    const cleanDay = normalizedDay.charAt(0).toUpperCase() + normalizedDay.slice(1);
 
     const existing = await mealsCollection(req).findOne({
       userId: req.user.userId,
@@ -85,10 +75,10 @@ router.post("/", authRequired, async (req, res) => {
       userId: req.user.userId,
       day: cleanDay,
       text,
-      createdAt: new Date()
+      createdAt: new Date(),
     };
-    const result = await mealsCollection(req).insertOne(doc);
 
+    const result = await mealsCollection(req).insertOne(doc);
     res.status(201).json({ _id: result.insertedId, ...doc });
   } catch (error) {
     console.error("DB ERROR (POST MEALS):", error);
@@ -98,26 +88,32 @@ router.post("/", authRequired, async (req, res) => {
 
 router.patch("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
+
     const dayValue = req.body?.day;
     const text = req.body?.text;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
 
     const set = {};
 
     if (dayValue) {
-      const validDays = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
-      const normalizedDay = dayValue.trim().toLowerCase();
+      const cleanDay = getCleanDayOr400(req, res);
+      if (!cleanDay) return;
 
-      if (!validDays.includes(normalizedDay)) {
-        return res.status(400).json({ message: "Invalid day. Use Monday-Sunday." })
+      // ✅ Prevent duplicate day for the same user (if another meal already uses this day)
+      const existingDay = await mealsCollection(req).findOne({
+        userId: req.user.userId,
+        day: cleanDay,
+        _id: { $ne: _id },
+      });
+
+      if (existingDay) {
+        return res.status(409).json({ message: "Meal already exists for this day" });
       }
-      const cleanDay = normalizedDay.charAt(0).toUpperCase() + normalizedDay.slice(1);
+
       set.day = cleanDay;
     }
+
     if (text) {
       set.text = text;
     }
@@ -127,7 +123,7 @@ router.patch("/:id", authRequired, async (req, res) => {
     }
 
     const result = await mealsCollection(req).findOneAndUpdate(
-      { _id: new ObjectId(id), userId: req.user.userId },
+      { _id, userId: req.user.userId },
       { $set: set },
       { returnDocument: "after" }
     );
@@ -135,24 +131,20 @@ router.patch("/:id", authRequired, async (req, res) => {
     if (!result) {
       return res.status(404).json({ message: "Meal not found" });
     }
-    return res.status(200).json(result);
 
+    return res.status(200).json(result);
   } catch (error) {
     console.error("DB ERROR (PATCH MEALS):", error);
     res.status(500).json({ message: "Database error" });
   }
 });
-
 router.delete("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
 
     const result = await mealsCollection(req).deleteOne({
-      _id: new ObjectId(id),
+      _id,
       userId: req.user.userId,
     });
 

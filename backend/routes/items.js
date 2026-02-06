@@ -1,16 +1,18 @@
 const authRequired = require("../middleware/authRequired");
 const express = require("express");
-const { ObjectId } = require("mongodb");
 
 const router = express.Router();
+
+const { getObjectIdOr400, getItemTextOr400 } = require("../utils/routeHelpers");
 
 const itemsCollection = (req) => req.db.collection("items");
 
 router.get("/", authRequired, async (req, res) => {
   try {
-    const items = await itemsCollection(req).find({ userId: req.user.userId }).toArray();
+    const items = await itemsCollection(req)
+      .find({ userId: req.user.userId })
+      .toArray();
     res.status(200).json(items);
-
   } catch (error) {
     console.error("DB ERROR (GET ITEMS):", error);
     res.status(500).json({ message: "Database error" });
@@ -19,14 +21,11 @@ router.get("/", authRequired, async (req, res) => {
 
 router.get("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
 
     const item = await itemsCollection(req).findOne({
-      _id: new ObjectId(id),
+      _id,
       userId: req.user.userId,
     });
 
@@ -43,17 +42,14 @@ router.get("/:id", authRequired, async (req, res) => {
 
 router.post("/", authRequired, async (req, res) => {
   try {
+    const payload = getItemTextOr400(req, res);
+    if (!payload) return;
 
-    if (!req.body || !req.body.text) {
-      return res.status(400).json({ message: "Text is required" });
-    }
-
-    const cleanText = req.body.text.trim();
-    const normalizedText = cleanText.toLowerCase();
+    const { text, textNormalized } = payload;
 
     const existing = await itemsCollection(req).findOne({
       userId: req.user.userId,
-      textNormalized: normalizedText
+      textNormalized,
     });
 
     if (existing) {
@@ -62,15 +58,13 @@ router.post("/", authRequired, async (req, res) => {
 
     const doc = {
       userId: req.user.userId,
-      text: cleanText,
-      textNormalized: normalizedText,
-      createdAt: new Date()
+      text,
+      textNormalized,
+      createdAt: new Date(),
     };
 
     const result = await itemsCollection(req).insertOne(doc);
-
     res.status(201).json({ _id: result.insertedId, ...doc });
-
   } catch (error) {
     console.error("DB ERROR (POST ITEMS):", error);
     res.status(500).json({ message: "Database error" });
@@ -79,32 +73,26 @@ router.post("/", authRequired, async (req, res) => {
 
 router.patch("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
 
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
+    const payload = getItemTextOr400(req, res);
+    if (!payload) return;
 
-    if (!req.body || !req.body.text) {
-      return res.status(400).json({ message: "Text is required" });
-    } const text = String(req.body.text).trim();
-    const textNormalized = text.toLowerCase();
-
-    if (!text) {
-      return res.status(400).json({ message: "Text is required" });
-    }
+    const { text, textNormalized } = payload;
 
     const duplicate = await itemsCollection(req).findOne({
       userId: req.user.userId,
       textNormalized,
-      _id: { $ne: new ObjectId(id) },
+      _id: { $ne: _id },
     });
 
     if (duplicate) {
       return res.status(409).json({ message: "Item already exists" });
     }
+
     const result = await itemsCollection(req).findOneAndUpdate(
-      { _id: new ObjectId(id), userId: req.user.userId },
+      { _id, userId: req.user.userId },
       { $set: { text, textNormalized, updatedAt: new Date() } },
       { returnDocument: "after" }
     );
@@ -122,14 +110,12 @@ router.patch("/:id", authRequired, async (req, res) => {
 
 router.delete("/:id", authRequired, async (req, res) => {
   try {
-    const id = req.params.id;
-
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid id" });
-    }
+    const _id = getObjectIdOr400(req, res);
+    if (!_id) return;
 
     const result = await itemsCollection(req).deleteOne({
-      _id: new ObjectId(id), userId: req.user.userId
+      _id,
+      userId: req.user.userId,
     });
 
     if (result.deletedCount === 0) {
