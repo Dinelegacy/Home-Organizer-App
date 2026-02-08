@@ -1,0 +1,203 @@
+:root {
+    --bg: #f6f7fb;
+    --card: #fff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --danger: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+.container {
+    width: min(720px, 92vw);
+    margin: 0 auto;
+    padding: 18px 0 26px;
+}
+
+/* ---------- Topbar / brand ---------- */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    background: #fff;
+    flex: 0 0 auto;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+    letter-spacing: -.4px;
+    line-height: 1.05;
+}
+
+.subtitle {
+    margin: 6px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.3;
+    max-width: 40ch;
+}
+
+/* ---------- Buttons / links ---------- */
+.nav {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+/* Mobile menu */
+.navLinks {
+    display: none;
+}
+
+.menuBtn {
+    height: 42px;
+    width: 46px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 20px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.menu {
+    position: absolute;
+    top: 72px;
+    right: 4vw;
+    width: min(220px, 92vw);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 8px;
+    box-shadow: 0 16px 30px rgba(17, 24, 39, .12);
+    display: none;
+}
+
+.menu.open {
+    display: grid;
+}
+
+.menuLink {
+    padding: 12px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.menuLink:hover {
+    background: #f3f4f6;
+}
+
+.topbar {
+    position: relative;
+}
+
+@media (min-width: 720px) {
+
+    .menuBtn,
+    .menu {
+        display: none !important;
+    }
+
+    .navLinks {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 14px;
+    border-radius: 12px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    background: var(--primary-hover);
+}
+
+.btn.ghost {
+    background: #fff;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+.muted {
+    color: var(--muted);
+    margin: 0;
+}
+
+/* ---------- Inputs ---------- */
+input,
+select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    font-size: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: #fff;
+}
+
+input:focus,
+select:focus {
+    border-color: rgba(37, 99, 235, .55);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+}
+
+/* ---------- Cards ---------- */
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 8px 20px rgba(17, 24, 39, .06);
+    margin-bottom: 14px;
+}
+
+/* Desktop container width improvement */
+@media (min-width: 900px) {
+    .container {
+        width: min(980px, 92vw);
+    }
+}

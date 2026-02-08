@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register | Home Organizer</title>
+    <title>Home Organizer</title>
     <link rel="stylesheet" href="./styles/base.css">
-    <link rel="stylesheet" href="./styles/auth.css" />
-    <script defer src="auth.js"></script>
+    <link rel="stylesheet" href="./styles/landing.css" />
 </head>
 
 <body>
@@ -20,7 +19,6 @@
                     <p class="subtitle">Track missing items. Plan meals for the week</p>
                 </div>
             </div>
-
             <nav class="nav">
                 <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
 
@@ -38,36 +36,23 @@
             </nav>
         </header>
 
-        <main class="authWrap">
-            <section class="authCard">
-                <header class="authHeader">
-                    <h2>Register</h2>
-                    <p class="authSub">Create your account to start organizing.</p>
-                </header>
+        <main class="hero card heroCover">
+            <img class="heroBg" src="./assets/images/hero-kitchen.jpg" alt="App preview" />
 
-                <form class="authForm" id="registerForm">
-                    <label class="field">
-                        <span>Email</span>
-                        <input id="email" type="email" placeholder="name@email.com" autocomplete="email" required />
-                    </label>
+            <div class="heroOverlay">
+                <h2>Stay organized at home.</h2>
+                <p class="muted">
+                    Track missing items and plan meals for the week. Simple and fast on mobile.
+                </p>
 
-                    <label class="field">
-                        <span>Password</span>
-                        <input id="password" type="password" placeholder="Create a password" autocomplete="new-password"
-                            required />
-                    </label>
-
-                    <button class="btn full" type="submit">Create account</button>
-
-                    <p class="authFoot">
-                        Already have an account? <a href="login.html">Login</a>
-                    </p>
-                </form>
-            </section>
+                <div class="heroActions">
+                    <a class="btn" href="register.html">Get started</a>
+                    <a class="btn ghost" href="login.html">I already have an account</a>
+                </div>
+            </div>
         </main>
     </div>
     <script src="menu.js"></script>
-    <script src="auth.js"></script>
 </body>
 
 </html>

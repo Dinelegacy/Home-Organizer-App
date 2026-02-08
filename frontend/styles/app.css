@@ -1,0 +1,93 @@
+h2 {
+    margin: 0 0 12px;
+    font-size: 18px;
+}
+
+.formRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.formRow input {
+    flex: 1;
+}
+
+button {
+    height: 44px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--primary-hover);
+}
+
+/* Lists */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 10px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    margin-bottom: 10px;
+}
+
+li span {
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.iconBtn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(239, 68, 68, .12);
+    color: var(--danger);
+    font-size: 20px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    border: 0;
+}
+
+.iconBtn:hover {
+    background: rgba(239, 68, 68, .18);
+}
+
+li.removing {
+    animation: slideOut .22s ease forwards;
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(-34px);
+    }
+}
+
+/* Desktop: 2 columns */
+@media (min-width: 900px) {
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        align-items: start;
+    }
+}

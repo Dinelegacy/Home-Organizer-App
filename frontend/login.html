@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Home Organizer</title>
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/auth.css" />
+    <script defer src="auth.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <header class="topbar">
+            <div class="brand">
+                <img src="./assets/images/Home-Organizer-logo.png" alt="Home Organizer logo" class="logo" />
+                <div>
+                    <h1>Home Organizer</h1>
+                    <p class="subtitle">Track missing items. Plan meals for the week</p>
+                </div>
+            </div>
+
+            <nav class="nav">
+                <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+
+                <div class="menu" id="menu">
+                    <a class="menuLink" href="landing.html">Home</a>
+                    <a class="menuLink" href="login.html">Login</a>
+                    <a class="menuLink" href="register.html">Register</a>
+                </div>
+
+                <div class="navLinks">
+                    <a class="btn ghost" href="landing.html">Home</a>
+                    <a class="btn ghost" href="login.html">Login</a>
+                    <a class="btn" href="register.html">Register</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="authWrap">
+            <section class="authCard">
+                <header class="authHeader">
+                    <h2>Login</h2>
+                    <p class="authSub">Welcome back. Continue where you left off.</p>
+                </header>
+
+                <form class="authForm" id="loginForm">
+                    <label class="field">
+                        <span>Email</span>
+                        <input id="email" type="email" placeholder="name@email.com" autocomplete="email" required />
+                    </label>
+
+                    <label class="field">
+                        <span>Password</span>
+                        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password"
+                            required />
+                    </label>
+
+                    <button class="btn full" type="submit">Login</button>
+
+                    <p class="authFoot">
+                        No account? <a href="register.html">Register</a>
+                    </p>
+                </form>
+            </section>
+        </main>
+    </div>
+    <script src="menu.js"></script>
+    <script src="auth.js"></script>
+</body>
+
+</html>

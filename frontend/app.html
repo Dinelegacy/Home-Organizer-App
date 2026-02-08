@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Organizer</title>
+  <link rel="stylesheet" href="./styles/base.css">
+  <link rel="stylesheet" href="./styles/landing.css" />
+</head>
+
+<body>
+  <div class="container">
+    <header class="app-header">
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+      <div class="brand">
+        <img src="./assets/images/Home-Organizer-logo.png" alt="Home Organizer logo" class="logo" />
+        <div class="brand-text">
+          <h1>Home Organizer</h1>
+          <p class="subtitle">Missing items + weekly meals in one place</p>
+        </div>
+      </div>
+    </header>
+    <main class="grid">
+      <!-- Missing Items -->
+      <section class="card">
+        <h2>Missing Items</h2>
+
+        <div class="formRow">
+          <input type="text" id="missing-input" placeholder="What is missing?" autocomplete="off" />
+          <button id="missing-item">Add</button>
+        </div>
+
+        <ul id="missing-list"></ul>
+      </section>
+
+      <!-- Weekly Meals -->
+      <section class="card">
+        <h2>Weekly Meals</h2>
+
+        <select id="meal-day">
+          <option value="">Select day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+
+        <div class="formRow">
+          <input type="text" id="meal-input" placeholder="What you will eat" autocomplete="off" />
+          <button id="meal-button">Add</button>
+        </div>
+
+        <ul id="meal-list"></ul>
+      </section>
+    </main>
+  </div>
+  <script src="menu.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

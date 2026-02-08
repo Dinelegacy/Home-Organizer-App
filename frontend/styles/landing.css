@@ -1,0 +1,61 @@
+.heroCover {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  min-height: 520px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.heroOverlay {
+  position: relative;
+  z-index: 1;
+  padding: 18px;
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  background: linear-gradient(to top, rgba(17, 24, 39, .72), rgba(17, 24, 39, .08));
+  color: #fff;
+}
+
+.heroOverlay h2 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: -.2px;
+  line-height: 1.1;
+}
+
+.heroOverlay .muted {
+  color: rgba(255, 255, 255, .85);
+}
+
+.heroActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.heroOverlay .btn.ghost {
+  background: rgba(255, 255, 255, .92);
+  border-color: transparent;
+  color: var(--text);
+}
+
+@media (max-width: 430px) {
+
+  .heroCover,
+  .heroOverlay {
+    min-height: 560px;
+  }
+}
