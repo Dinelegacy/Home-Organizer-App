@@ -1,49 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Organizer App</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Organizer</title>
+  <link rel="stylesheet" href="index.css" />
 </head>
+
 <body>
+  <div class="container">
+    <header class="app-header">
+      <div class="brand">
+        <img src="./assets/images/Home-Organizer-logo.png" alt="Home Organizer logo" class="logo" />
+        <div class="brand-text">
+          <h1>Home Organizer</h1>
+          <p class="subtitle">Missing items + weekly meals in one place</p>
+        </div>
+      </div>
+    </header>
+    <main class="grid">
+      <!-- Missing Items -->
+      <section class="card">
+        <h2>Missing Items</h2>
 
-<h1>Home Organizer </h1>
+        <div class="formRow">
+          <input type="text" id="missing-input" placeholder="What is missing?" autocomplete="off" />
+          <button id="missing-item">Add</button>
+        </div>
 
-    <section>  
-  <h2>Missing Items </h2>
-  <input type="text" id="missing-input" placeholder="What is missing?">
-  <button id="missing-item">Add</button>
-  <ul id="missing-list"></ul>
-</section>
+        <ul id="missing-list"></ul>
+      </section>
 
-<section>
-  <h2>Weekly Meals</h2>
-  <select id="meal-day">
-    <option value="">Select day</option>
-    <option value="Monday">Monday</option>
-    <option value="Tuesday">Tuesday</option>
-    <option value="Wednesday">Wednesday</option>
-    <option value="Thursday">Thursday</option>
-    <option value="Friday">Friday</option>
-    <option value="Saturday">Saturday</option>
-    <option value="Sunday">Sunday</option>
-  </select> 
+      <!-- Weekly Meals -->
+      <section class="card">
+        <h2>Weekly Meals</h2>
 
-  <input type="text" id="meal-input" placeholder="What you will eat">
-  <button id="meal-button">Add</button>
-  <ul id="meal-list"></ul>
-</section>
+        <select id="meal-day">
+          <option value="">Select day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
 
+        <div class="formRow">
+          <input type="text" id="meal-input" placeholder="What you will eat" autocomplete="off" />
+          <button id="meal-button">Add</button>
+        </div>
 
-<!-- <section>
-  <h2>Grocery List</h2>
-  <input type="text" id="grocery-input" placeholder="Item to buy">
-  <button id="grocery-button">Add</button>
-  <ul id="grocery-list"></ul>
-</section>
- -->
-    
-    <script src="index.js"></script>
+        <ul id="meal-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <script src="index.js"></script>
 </body>
+
 </html>

@@ -1,124 +1,161 @@
+const API_BASE = "http://127.0.0.1:3000";
+const ITEMS_URL = `${API_BASE}/api/items`;
+const MEALS_URL = `${API_BASE}/api/meals`;
 
-// Missing items section (Dom Elements)
+const TOKEN =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTg1MTZiN2Y0NzU5MjRlOTY4ODQ4NGUiLCJlbWFpbCI6ImRpbmVsb3ZlQHlhaG9vLmNvbSIsImlhdCI6MTc3MDQ4NjI4NCwiZXhwIjoxNzcwNDg5ODg0fQ.oeovdGgSpTXnZpF9fw4ScfaNSbgYDgkUOsqrr3LMAg8";
 
+function authHeaders(extra = {}) {
+  return {
+    Authorization: `Bearer ${TOKEN}`,
+    ...extra,
+  };
+}
+
+async function readError(res) {
+  // try JSON first, fallback to text
+  const ct = res.headers.get("content-type") || "";
+  if (ct.includes("application/json")) {
+    const body = await res.json().catch(() => ({}));
+    return body.message || body.error || JSON.stringify(body);
+  }
+  const text = await res.text().catch(() => "");
+  return text || `Error ${res.status}`;
+}
+
+async function apiFetch(url, options = {}) {
+  const res = await fetch(url, {
+    ...options,
+    headers: authHeaders(options.headers || {}),
+  });
+
+  // helpful debug
+  if (!res.ok) {
+    let errText = "";
+    try {
+      errText = await res.clone().text();
+    } catch { }
+    console.log("API ERROR:", res.status, url, errText);
+  }
+
+  return res;
+}
+
+// ---- ITEMS ----
 const list = document.getElementById("missing-list");
 const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");
 
-// Backend API endpoints (Express Server)
-const ITEMS_URL = "http://localhost:3000/api/items";
-
-// Fetch items from backend API (Backend reads from MongoDB)
 async function loadItems() {
-  const res = await fetch(ITEMS_URL);   // frontend → backend request
-  const data = await res.json(); // backend → frontend response (from database)
+  const res = await apiFetch(ITEMS_URL);
 
+  if (!res.ok) {
+    const msg = await readError(res);
+    list.innerHTML = `<li>${msg}</li>`;
+    return;
+  }
+
+  const data = await res.json();
   list.innerHTML = "";
 
   data.forEach((item) => {
     const li = document.createElement("li");
-    li.textContent = item.text;
 
-      // Delete through backend API (backend deletes from MongoDB)
+    const textSpan = document.createElement("span");
+    textSpan.textContent = item.text;
+
     const removeBtn = document.createElement("button");
-    removeBtn.textContent = "🗑️";
+    removeBtn.textContent = "×";
+    removeBtn.classList.add("iconBtn");
+    removeBtn.setAttribute("aria-label", "Delete");
     removeBtn.addEventListener("click", async () => {
-      await fetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
-      loadItems(); // refresh list
+      li.classList.add("removing");
+      const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
+      if (!delRes.ok) alert(await readError(delRes));
+      setTimeout(loadItems, 250);
     });
 
+    li.appendChild(textSpan);
     li.appendChild(removeBtn);
     list.appendChild(li);
   });
 }
 
-loadItems();
-
-// Enter key triggers button click
-input.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") button.click();
-});
-
-//  add item to database
 button.addEventListener("click", async () => {
   const text = input.value.trim();
-  if (text === "") return;
+  if (!text) return;
 
-  const res = await fetch(ITEMS_URL, {
+  const res = await apiFetch(ITEMS_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text }),
   });
 
   if (!res.ok) {
-    alert("Failed to save item");
+    alert(await readError(res)); // 
     return;
   }
 
   input.value = "";
-  loadItems(); // reload from DB so it persists + shows delete button
+  loadItems();
 });
 
-// Weekly meal section (DOM Element)
+loadItems();
 
+// ---- MEALS ----
 const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
 const mealDay = document.getElementById("meal-day");
 
-// Backend API endpoint (Express Server)
-const MEALS_URL = "http://localhost:3000/api/meals";
-
-// Fetch meals from backend API (backend reads from MongoDB)
 async function loadMeals() {
-  const res = await fetch(MEALS_URL); // frontend → backend request
+  const res = await apiFetch(MEALS_URL);
 
-  const data = await res.json();  // backend → frontend response (from database)
+  if (!res.ok) {
+    const msg = await readError(res);
+    mealList.innerHTML = `<li>${msg}</li>`;
+    return;
+  }
 
-
+  const data = await res.json();
   mealList.innerHTML = "";
 
   data.forEach((meal) => {
     const li = document.createElement("li");
-    li.textContent = `${meal.day}: ${meal.text}`;
 
-    // Delete through backend API (backend deletes from MongoDB)
+    const textSpan = document.createElement("span");
+    textSpan.textContent = `${meal.day}: ${meal.text}`;
 
     const removeBtn = document.createElement("button");
-    removeBtn.textContent = "🗑️";
+    removeBtn.textContent = "×";
+    removeBtn.classList.add("iconBtn");
+    removeBtn.setAttribute("aria-label", "Delete");
     removeBtn.addEventListener("click", async () => {
-      await fetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
-      loadMeals();
+      li.classList.add("removing");
+      const delRes = await apiFetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
+      if (!delRes.ok) alert(await readError(delRes));
+      setTimeout(loadMeals, 250);
     });
 
+    li.appendChild(textSpan);
     li.appendChild(removeBtn);
     mealList.appendChild(li);
   });
 }
 
-loadMeals();
-
-mealInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    mealButton.click();
-  }
-});
-
 mealButton.addEventListener("click", async () => {
   const day = mealDay.value;
   const text = mealInput.value.trim();
-
   if (!day || !text) return;
 
-  const res = await fetch(MEALS_URL, {
+  const res = await apiFetch(MEALS_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ day, text }),
   });
 
   if (!res.ok) {
-    alert("Failed to save meal");
+    alert(await readError(res));
     return;
   }
 
@@ -127,40 +164,4 @@ mealButton.addEventListener("click", async () => {
   loadMeals();
 });
 
-
-// Grocery section 
-/* const groceryInput = document.getElementById("grocery-input");
-const groceryButton = document.getElementById("grocery-button");
-const groceryList = document.getElementById("grocery-list");
-
-groceryInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    groceryButton.click();   // grocery section button
-  }
-});  // for enter click 
-
-
-groceryButton.addEventListener("click" , () =>{
-    if (groceryInput.value.trim() === "") {
-        return;
-    }
-    const value = groceryInput.value;
-    console.log(value);
-
-    const selectList = document.createElement("li");
-    selectList.textContent = groceryInput.value;
-
- const removeBtn = document.createElement("button"); // create a button to delete or remove items
-    removeBtn.textContent = "🗑️"; // adding textContent to remove or delete the items
-    removeBtn.addEventListener("click" , () => {
-        selectList.remove();
-    })
-    
-    selectList.appendChild(removeBtn);
-    groceryList.appendChild(selectList);
-
-    groceryInput.value = "" ;
-
-})
- */
+loadMeals();
