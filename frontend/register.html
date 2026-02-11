@@ -7,36 +7,29 @@
     <title>Register | Home Organizer</title>
     <link rel="stylesheet" href="./styles/base.css">
     <link rel="stylesheet" href="./styles/auth.css" />
-    <script defer src="auth.js"></script>
 </head>
 
 <body>
     <div class="container">
         <header class="topbar">
-            <div class="brand">
-                <img src="./assets/images/Home-Organizer-logo.png" alt="Home Organizer logo" class="logo" />
+            <a href="landing.html" class="brand">
+                <img src="./assets/images/Home-Organizer-logo.png" class="logo" alt="Home Organizer logo" />
                 <div>
                     <h1>Home Organizer</h1>
                     <p class="subtitle">Track missing items. Plan meals for the week</p>
                 </div>
-            </div>
+            </a>
 
             <nav class="nav">
-                <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
-
+                <button class="menuBtn" id="menuBtn" aria-label="Open menu">☰</button>
                 <div class="menu" id="menu">
                     <a class="menuLink" href="landing.html">Home</a>
                     <a class="menuLink" href="login.html">Login</a>
                     <a class="menuLink" href="register.html">Register</a>
                 </div>
-
-                <div class="navLinks">
-                    <a class="btn ghost" href="landing.html">Home</a>
-                    <a class="btn ghost" href="login.html">Login</a>
-                    <a class="btn" href="register.html">Register</a>
-                </div>
             </nav>
         </header>
+        <div id="toast" class="toast"></div>
 
         <main class="authWrap">
             <section class="authCard">
@@ -51,12 +44,28 @@
                         <input id="email" type="email" placeholder="name@email.com" autocomplete="email" required />
                     </label>
 
-                    <label class="field">
+                    <label class="field passwordField">
                         <span>Password</span>
-                        <input id="password" type="password" placeholder="Create a password" autocomplete="new-password"
-                            required />
+
+                        <div class="passwordWrapper">
+                            <input id="password" type="password" placeholder="Create a password"
+                                autocomplete="new-password" required />
+                            <button type="button" class="togglePassword" aria-label="Toggle password">
+                                👁
+                            </button>
+                        </div>
                     </label>
 
+                    <label class="field passwordField">
+                        <span>Confirm Password</span>
+                        <div class="passwordWrapper">
+                            <input id="confirmPassword" type="password" placeholder="Repeat your password" required />
+                            <button type="button" class="togglePassword" aria-label="Toggle password">
+                                👁
+                            </button>
+                        </div>
+                    </label>
+                    <p class="formMsg" id="formMsg" aria-live="polite"></p>
                     <button class="btn full" type="submit">Create account</button>
 
                     <p class="authFoot">

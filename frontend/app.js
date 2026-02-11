@@ -1,7 +1,20 @@
+function showToast(message, type = "info") {
+  const el = document.getElementById("toast");
+  if (!el) return;
+
+  el.className = `toast show ${type}`;
+  el.textContent = message;
+
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => {
+    el.className = "toast";
+    el.textContent = "";
+  }, 2600);
+}
+
 const API_BASE = "http://127.0.0.1:3000";
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
-
 const TOKEN = localStorage.getItem("token");
 if (!TOKEN) {
   window.location.href = "login.html";
@@ -78,7 +91,7 @@ async function loadItems() {
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
       const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
-      if (!delRes.ok) alert(await readError(delRes));
+      if (!delRes.ok) showToast(await readError(delRes), "error");
       setTimeout(loadItems, 250);
     });
 
@@ -99,7 +112,7 @@ button.addEventListener("click", async () => {
   });
 
   if (!res.ok) {
-    alert(await readError(res)); // 
+    showToast(await readError(res), "error");
     return;
   }
 
@@ -114,6 +127,22 @@ const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
 const mealDay = document.getElementById("meal-day");
+
+// Enter key = Add item
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    button.click();
+  }
+});
+
+// Enter key = Add meal
+mealInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    mealButton.click();
+  }
+});
 
 async function loadMeals() {
   const res = await apiFetch(MEALS_URL);

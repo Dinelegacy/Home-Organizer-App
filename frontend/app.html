@@ -4,32 +4,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home Organizer</title>
-  <link rel="stylesheet" href="./styles/base.css">
-  <link rel="stylesheet" href="./styles/landing.css" />
+  <title>Home Organizer | App</title>
+
+  <link rel="stylesheet" href="./styles/base.css" />
+  <link rel="stylesheet" href="./styles/app.css" />
 </head>
 
 <body>
   <div class="container">
-    <header class="app-header">
-      <button id="logoutBtn" class="btn ghost">Logout</button>
-      <div class="brand">
+
+    <!-- Top bar -->
+    <header class="appHeader">
+      <!-- Logo goes back to landing -->
+      <a href="landing.html" class="brand" aria-label="Go to home">
         <img src="./assets/images/Home-Organizer-logo.png" alt="Home Organizer logo" class="logo" />
-        <div class="brand-text">
+        <div class="brandText">
           <h1>Home Organizer</h1>
-          <p class="subtitle">Missing items + weekly meals in one place</p>
+          <p class="subtitle">Missing items & weekly meals</p>
         </div>
-      </div>
+      </a>
+
+      <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
     </header>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <!-- Main -->
     <main class="grid">
+
       <!-- Missing Items -->
       <section class="card">
         <h2>Missing Items</h2>
 
         <div class="formRow">
           <input type="text" id="missing-input" placeholder="What is missing?" autocomplete="off" />
-          <button id="missing-item">Add</button>
+          <button id="missing-item" type="button">Add</button>
         </div>
+
+        <!-- ✅ Error message area -->
+        <p id="item-error" class="formError"></p>
 
         <ul id="missing-list"></ul>
       </section>
@@ -51,14 +64,15 @@
 
         <div class="formRow">
           <input type="text" id="meal-input" placeholder="What you will eat" autocomplete="off" />
-          <button id="meal-button">Add</button>
+          <button id="meal-button" type="button">Add</button>
         </div>
 
         <ul id="meal-list"></ul>
       </section>
+
     </main>
   </div>
-  <script src="menu.js"></script>
+
   <script src="app.js"></script>
 </body>
 

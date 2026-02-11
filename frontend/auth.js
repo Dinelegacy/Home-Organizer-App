@@ -1,58 +1,118 @@
 const API_BASE = "http://127.0.0.1:3000";
 
-const loginBtn = document.getElementById("loginBtn");
-const registerBtn = document.getElementById("registerBtn");
+/* ---------- Toast (keep) ---------- */
+function showToast(message, type = "info") {
+    const el = document.getElementById("toast");
+    if (!el) return;
+    el.className = `toast show ${type}`;
+    el.textContent = message;
+    clearTimeout(window.__toastTimer);
+    window.__toastTimer = setTimeout(() => {
+        el.className = "toast";
+        el.textContent = "";
+    }, 2600);
+}
 
-async function login(email, password) {
-    const res = await fetch(`${API_BASE}/api/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-    });
+/* ---------- Inline red message ---------- */
+function setFormMsg(message = "") {
+    const el = document.getElementById("formMsg"); // must exist in HTML
+    if (!el) return;
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        alert(data.message || "Login failed");
+    if (!message) {
+        el.textContent = "";
+        el.classList.remove("show");
         return;
     }
 
-    localStorage.setItem("token", data.token);
-    window.location.href = "app.html";
+    el.textContent = message;
+    el.classList.add("show");
 }
 
-async function register(email, password) {
-    const res = await fetch(`${API_BASE}/api/users/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+/* ---------- Read backend message safely ---------- */
+async function readJsonMessage(res) {
+    const ct = res.headers.get("content-type") || "";
+    if (ct.includes("application/json")) {
+        const body = await res.json().catch(() => ({}));
+        return body.message || body.error || "Request failed";
+    }
+    return "Request failed";
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    document.querySelectorAll(".togglePassword").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const input = btn.parentElement.querySelector("input");
+            if (!input) return;
+
+            input.type = input.type === "password" ? "text" : "password";
+        });
     });
 
-    const data = await res.json();
+    if (loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            setFormMsg(""); // clear old error
 
-    if (!res.ok) {
-        alert(data.message || "Registration failed");
-        return;
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            try {
+                const res = await fetch(`${API_BASE}/api/users/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                if (!res.ok) {
+                    setFormMsg(await readJsonMessage(res)); // red inline message
+                    return;
+                }
+
+                const data = await res.json();
+                localStorage.setItem("token", data.token);
+                window.location.href = "app.html";
+            } catch (err) {
+                showToast("Server is not running (cannot connect).", "error");
+            }
+        });
     }
 
-    alert("Account created. You can login now.");
-    window.location.href = "login.html";
-}
+    if (registerForm) {
+        registerForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            setFormMsg(""); // clear old error
 
-if (loginBtn) {
-    loginBtn.addEventListener("click", () => {
-        login(
-            document.getElementById("email").value.trim(),
-            document.getElementById("password").value.trim()
-        );
-    });
-}
+            // declare password BEFORE using it
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const confirmPassword = document
+                .getElementById("confirmPassword")
+                .value.trim();
 
-if (registerBtn) {
-    registerBtn.addEventListener("click", () => {
-        register(
-            document.getElementById("email").value.trim(),
-            document.getElementById("password").value.trim()
-        );
-    });
-}
+            if (password !== confirmPassword) {
+                setFormMsg("Passwords do not match"); // inline red message (not toast)
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/users/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                if (!res.ok) {
+                    setFormMsg(await readJsonMessage(res)); // red inline message
+                    return;
+                }
+
+                showToast("Account created Please login", "success");
+                setTimeout(() => (window.location.href = "login.html"), 2000);
+            } catch (err) {
+                showToast("Server is not running (cannot connect).", "error");
+            }
+        });
+    }
+});

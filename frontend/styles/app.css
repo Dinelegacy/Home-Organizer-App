@@ -1,32 +1,74 @@
-h2 {
-    margin: 0 0 12px;
-    font-size: 18px;
+/* App page only */
+
+/* Header in app page (not landing/auth topbar) */
+.appHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 16px 0;
 }
 
+/* Logout polish */
+#logoutBtn.btn.ghost {
+    padding: 0 16px;
+    height: 38px;
+    transition: all .2s ease;
+}
+
+#logoutBtn.btn.ghost:hover {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+/* Layout */
+.grid {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 900px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+/* Form row */
 .formRow {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     gap: 10px;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .formRow input {
-    flex: 1;
+    height: 48px;
+    font-size: 16px;
+    padding: 0 14px;
+    border-radius: 12px;
 }
 
-button {
-    height: 44px;
-    padding: 0 14px;
-    border: 0;
-    border-radius: 10px;
+.formRow button {
+    height: 48px;
+    padding: 0 18px;
+    border-radius: 12px;
+    font-weight: 600;
     background: var(--primary);
+    transition: background .15s ease, transform .05s ease;
+    border: 0;
     color: #fff;
-    font-weight: 700;
     cursor: pointer;
 }
 
-button:hover {
+.formRow button:hover {
     background: var(--primary-hover);
+}
+
+.formRow button:active {
+    transform: scale(0.98);
 }
 
 /* Lists */
@@ -36,16 +78,29 @@ ul {
     margin: 0;
 }
 
+/* Scrollable list container (good for 50+ items) */
+#missing-list,
+#meal-list {
+    max-height: 360px;
+    overflow: auto;
+    padding-right: 6px;
+}
+
+/* Row */
 li {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding: 10px 10px;
+    padding: 10px 14px;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 14px;
     background: #fff;
-    margin-bottom: 10px;
+    margin: 0;
+}
+
+li+li {
+    margin-top: 8px;
 }
 
 li span {
@@ -54,40 +109,47 @@ li span {
     word-break: break-word;
 }
 
+/* Delete button */
 .iconBtn {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: rgba(239, 68, 68, .12);
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(220, 38, 38, 0.12);
     color: var(--danger);
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1;
     display: grid;
     place-items: center;
-    border: 0;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
 }
 
 .iconBtn:hover {
-    background: rgba(239, 68, 68, .18);
+    background: rgba(220, 38, 38, 0.2);
+    transform: scale(1.05);
 }
 
+/* Scrollbar polish */
+#missing-list::-webkit-scrollbar,
+#meal-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#missing-list::-webkit-scrollbar-thumb,
+#meal-list::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 999px;
+}
+
+/* Remove animation */
 li.removing {
-    animation: slideOut .22s ease forwards;
+    animation: slideOut 0.22s ease forwards;
 }
 
 @keyframes slideOut {
     to {
         opacity: 0;
-        transform: translateX(-34px);
-    }
-}
-
-/* Desktop: 2 columns */
-@media (min-width: 900px) {
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        align-items: start;
+        transform: translateX(-20px);
     }
 }
