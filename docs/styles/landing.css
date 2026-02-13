@@ -23,26 +23,27 @@
 .heroOverlay {
   position: relative;
   z-index: 1;
-
-  /* move text UP and reduce empty top space */
-  min-height: 520px;
   padding: 18px;
-  padding-bottom: 28px;
-
+  min-height: 520px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 10px;
-
-  background: linear-gradient(to top,
-      rgba(17, 24, 39, 0.72),
-      rgba(17, 24, 39, 0.12),
-      rgba(17, 24, 39, 0));
+  gap: 12px;
   color: #fff;
-
-  transform: translateY(-28px);
+  background: linear-gradient(to top, rgba(17, 24, 39, .72), rgba(17, 24, 39, .08));
 }
 
+/* OPTION A: put content in the MIDDLE */
+.heroOverlay {
+  justify-content: center;
+}
+
+/* OPTION B: put content near the TOP (uncomment this instead of middle) */
+/*
+.heroOverlay{
+  justify-content:flex-start;
+  padding-top:48px;
+}
+*/
 .heroOverlay h2 {
   margin: 0;
   font-size: 30px;
@@ -81,8 +82,8 @@
 /* FEATURES — make them blend with body (less “big cards”) */
 .features {
   display: grid;
-  gap: 12px;
-  margin-top: 14px;
+  gap: 18px;
+  margin-top: 18px;
 }
 
 .feature {

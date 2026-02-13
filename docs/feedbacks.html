@@ -1,0 +1,30 @@
+<link rel="stylesheet" href="./styles/base.css" />
+<link rel="stylesheet" href="./styles/" />
+
+
+<form class="authForm" action="https://formspree.io/f/xbdagndo" method="POST">
+    <!-- anti-spam (hidden) -->
+    <input type="text" name="_gotcha" style="display:none" />
+
+    <label class="field">
+        <span>Name (optional)</span>
+        <input type="text" name="name" placeholder="Your name" />
+    </label>
+
+    <label class="field">
+        <span>Email</span>
+        <input type="email" name="email" placeholder="your@email.com" required />
+    </label>
+
+    <label class="field">
+        <span>Message</span>
+        <textarea name="message" rows="4" placeholder="Write your feedback..." required></textarea>
+    </label>
+
+    <input type="hidden" name="_subject" value="New Feedback - Home Organizer" />
+
+    <!-- where to go after submit -->
+    <input type="hidden" name="_next" value="landing.html" />
+
+    <button class="btn full" type="submit">Send Feedback</button>
+</form>
