@@ -1,18 +1,14 @@
-body {
-  transition: background .2s ease;
-}
+/* landing.css (landing page only) */
 
+/* HERO */
 .heroCover {
   position: relative;
   overflow: hidden;
   padding: 0;
   min-height: 520px;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 1px solid var(--border);
-}
-
-.heroCover {
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
 }
 
 .heroBg {
@@ -27,64 +23,62 @@ body {
 .heroOverlay {
   position: relative;
   z-index: 1;
-  padding: 18px;
+
+  /* move text UP and reduce empty top space */
   min-height: 520px;
+  padding: 18px;
+  padding-bottom: 28px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   gap: 10px;
-  background: linear-gradient(to top, rgba(17, 24, 39, .72), rgba(17, 24, 39, .08));
-  color: #fff;
-}
 
-.heroOverlay {
-  justify-content: flex-end;
-  /* keep */
-  padding-bottom: 34px;
-  /* add a bit more breathing room */
+  background: linear-gradient(to top,
+      rgba(17, 24, 39, 0.72),
+      rgba(17, 24, 39, 0.12),
+      rgba(17, 24, 39, 0));
+  color: #fff;
+
+  transform: translateY(-28px);
 }
 
 .heroOverlay h2 {
-  margin-bottom: 6px;
+  margin: 0;
+  font-size: 30px;
+  letter-spacing: -0.4px;
 }
 
 .heroOverlay .muted {
-  margin-bottom: 12px;
-  max-width: 38ch;
-  /* nicer line length */
+  margin: 0;
+  max-width: 40ch;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.4;
 }
 
-/* Move the whole text block UP */
-.heroOverlay {
-  gap: 12px;
-  transform: translateY(-42px);
+.heroActions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
-/* On very small screens, move less */
 @media (max-width: 430px) {
+
+  .heroCover,
   .heroOverlay {
-    transform: translateY(-28px);
+    min-height: 560px;
+  }
+
+  .heroOverlay {
+    transform: translateY(-18px);
+  }
+
+  .heroOverlay h2 {
+    font-size: 28px;
   }
 }
 
-.menuBtn {
-  position: relative;
-  z-index: 50;
-  cursor: pointer;
-}
-
-.menu {
-  position: absolute;
-  right: 0;
-  top: 52px;
-  z-index: 50;
-  display: none;
-}
-
-.menu.open {
-  display: grid;
-}
-
+/* FEATURES — make them blend with body (less “big cards”) */
 .features {
   display: grid;
   gap: 12px;
@@ -92,23 +86,26 @@ body {
 }
 
 .feature {
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(229, 231, 235, 0.9);
+  border-radius: 16px;
+  padding: 14px 14px;
+  box-shadow: 0 10px 24px rgba(17, 24, 39, 0.05);
 }
 
 .feature h3 {
   margin: 0 0 6px;
   font-size: 16px;
+  letter-spacing: -0.2px;
 }
 
 .feature p {
   margin: 0;
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
+/* FOOTER */
 .footer {
   margin-top: 18px;
   padding: 16px 0 10px;
