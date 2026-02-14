@@ -170,3 +170,31 @@ li.removing {
     font-weight: 400;
     color: var(--muted);
 }
+
+/* Inline messages under each section */
+.inlineMsg {
+    margin: 8px 2px 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    min-height: 18px;
+    /* keeps layout stable */
+}
+
+.inlineMsg.success {
+    color: var(--accent);
+    /* cart green */
+}
+
+.inlineMsg.error {
+    color: var(--danger);
+}
+
+.inlineMsg.info {
+    color: var(--muted);
+}
+
+#itemsMsg.success,
+#mealsMsg.success {
+    color: var(--accent) !important;
+}

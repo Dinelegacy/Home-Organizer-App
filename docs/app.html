@@ -27,6 +27,7 @@
       <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
     </header>
 
+    <!-- Global toast -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <!-- Main -->
@@ -41,11 +42,13 @@
           <button id="missing-item" type="button">Add</button>
         </div>
 
-        <!--  Error message area -->
-        <p id="item-error" class="formError"></p>
-        <input type="text" id="item-search" placeholder="Search items..." autocomplete="off" />
-        <ul id="missing-list"></ul>
+        <!-- Inline message (green/red) -->
+        <p id="itemsMsg" class="inlineMsg" aria-live="polite"></p>
 
+        <!-- Optional: search -->
+        <input type="text" id="item-search" placeholder="Search items..." autocomplete="off" />
+
+        <ul id="missing-list"></ul>
       </section>
 
       <!-- Weekly Meals -->
@@ -64,9 +67,12 @@
         </select>
 
         <div class="formRow">
-          <input type="text" id="meal-input" placeholder="What you will eat" autocomplete="off" />
+          <input type="text" id="meal-input" placeholder="What you will eat?" autocomplete="off" />
           <button id="meal-button" type="button">Add</button>
         </div>
+
+        <!-- Inline message (green/red) -->
+        <p id="mealsMsg" class="inlineMsg" aria-live="polite"></p>
 
         <ul id="meal-list"></ul>
       </section>

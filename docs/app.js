@@ -3,12 +3,13 @@ function showToast(message, type = "info") {
   if (!el) return;
 
   el.className = `toast show ${type}`;
-  el.innerHTML = message;
+  el.textContent = message;
 
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(() => {
     el.className = "toast";
-  }, 3200); // stays a bit longer now
+    el.textContent = "";
+  }, 2000);
 }
 
 const API_BASE = "http://127.0.0.1:3000";
@@ -16,42 +17,24 @@ const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
 
 const TOKEN = localStorage.getItem("token");
-if (!TOKEN) {
-  window.location.href = "login.html";
-}
+if (!TOKEN) window.location.href = "login.html";
 
 function authHeaders(extra = {}) {
-  return {
-    Authorization: `Bearer ${TOKEN}`,
-    ...extra,
-  };
+  return { Authorization: `Bearer ${TOKEN}`, ...extra };
 }
 
 async function readError(res) {
   const ct = res.headers.get("content-type") || "";
   if (ct.includes("application/json")) {
     const body = await res.json().catch(() => ({}));
-    return body.message || body.error || JSON.stringify(body);
+    return body.message || body.error || "Request failed";
   }
   const text = await res.text().catch(() => "");
   return text || `Error ${res.status}`;
 }
 
 async function apiFetch(url, options = {}) {
-  const res = await fetch(url, {
-    ...options,
-    headers: authHeaders(options.headers || {}),
-  });
-
-  if (!res.ok) {
-    let errText = "";
-    try {
-      errText = await res.clone().text();
-    } catch { }
-    console.log("API ERROR:", res.status, url, errText);
-  }
-
-  return res;
+  return fetch(url, { ...options, headers: authHeaders(options.headers || {}) });
 }
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
@@ -59,17 +42,23 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
   window.location.href = "login.html";
 });
 
-/* =========================
-   ITEMS + SEARCH
-========================= */
-
+/* ---------- ITEMS ---------- */
 const list = document.getElementById("missing-list");
 const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");
-const itemSearch = document.getElementById("item-search"); // <-- add this input in app.html
+const itemsMsg = document.getElementById("itemsMsg");
+const itemSearch = document.getElementById("item-search");
 
-let itemsCache = [];
+let ALL_ITEMS = [];
 
+function setItemsMsg(text = "", type = "") {
+  if (!itemsMsg) return;
+  itemsMsg.textContent = text;
+  itemsMsg.className = `inlineMsg ${type}`.trim();
+  if (text) setTimeout(() => setItemsMsg("", ""), 2000);
+}
+
+// render list based on a provided array
 function renderItems(items) {
   list.innerHTML = "";
 
@@ -83,12 +72,11 @@ function renderItems(items) {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
-
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
       const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
       if (!delRes.ok) showToast(await readError(delRes), "error");
-      setTimeout(loadItems, 250);
+      setTimeout(loadItems, 200);
     });
 
     li.appendChild(textSpan);
@@ -97,48 +85,59 @@ function renderItems(items) {
   });
 }
 
-function applyItemFilter() {
-  const q = (itemSearch?.value || "").trim().toLowerCase();
+// ✅ Search: show "not found" ONLY when typing & no match (NOT when list empty)
+if (itemSearch) {
+  itemSearch.addEventListener("input", () => {
+    const q = itemSearch.value.trim().toLowerCase();
 
-  const filtered = q
-    ? itemsCache.filter((i) => i.text.toLowerCase().includes(q))
-    : itemsCache;
+    // empty search: reset + no message
+    if (!q) {
+      setItemsMsg("", "");
+      renderItems(ALL_ITEMS);
+      return;
+    }
 
-  if (filtered.length === 0) {
-    list.innerHTML = `
-      <li class="emptyState">
-        🔍 No items found<br/>
-        <small>Try another keyword.</small>
-      </li>
-    `;
-    return;
-  }
+    // if there are 0 items total: no message
+    if (ALL_ITEMS.length === 0) {
+      setItemsMsg("", "");
+      renderItems([]);
+      return;
+    }
 
-  renderItems(filtered);
+    const filtered = ALL_ITEMS.filter((it) =>
+      (it.text || "").toLowerCase().includes(q)
+    );
+
+    renderItems(filtered);
+
+    if (filtered.length === 0) setItemsMsg(`No items found`, "info");
+    else setItemsMsg("", "");
+  });
 }
 
 async function loadItems() {
   const res = await apiFetch(ITEMS_URL);
-
   if (!res.ok) {
-    const msg = await readError(res);
-    list.innerHTML = `<li>${msg}</li>`;
+    list.innerHTML = `<li>${await readError(res)}</li>`;
     return;
   }
 
-  itemsCache = await res.json();
-  applyItemFilter();
-}
+  ALL_ITEMS = await res.json();
 
-itemSearch?.addEventListener("input", applyItemFilter);
-
-// Enter key = add item
-input?.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    button?.click();
+  // keep search applied after reload
+  const q = (itemSearch?.value || "").trim().toLowerCase();
+  if (q) {
+    const filtered = ALL_ITEMS.filter((it) =>
+      (it.text || "").toLowerCase().includes(q)
+    );
+    renderItems(filtered);
+    if (filtered.length === 0 && ALL_ITEMS.length > 0) setItemsMsg(`"${q}" not found`, "error");
+    else setItemsMsg("", "");
+  } else {
+    renderItems(ALL_ITEMS);
+    setItemsMsg("", "");
   }
-});
+}
 
 button?.addEventListener("click", async () => {
   const text = input.value.trim();
@@ -151,40 +150,42 @@ button?.addEventListener("click", async () => {
   });
 
   if (!res.ok) {
-    showToast(await readError(res), "error");
+    setItemsMsg(await readError(res), "error");
     return;
   }
 
+  setItemsMsg(`${text} added`, "success");
   input.value = "";
-  showToast("✔ Item added successfully", "success");
   loadItems();
+});
+
+input?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    button.click();
+  }
 });
 
 loadItems();
 
-/* =========================
-   MEALS
-========================= */
-
+/* ---------- MEALS ---------- */
 const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
 const mealDay = document.getElementById("meal-day");
+const mealsMsg = document.getElementById("mealsMsg");
 
-// Enter key = add meal
-mealInput?.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    mealButton?.click();
-  }
-});
+function setMealsMsg(text = "", type = "") {
+  if (!mealsMsg) return;
+  mealsMsg.textContent = text;
+  mealsMsg.className = `inlineMsg ${type}`.trim();
+  if (text) setTimeout(() => setMealsMsg("", ""), 1400);
+}
 
 async function loadMeals() {
   const res = await apiFetch(MEALS_URL);
-
   if (!res.ok) {
-    const msg = await readError(res);
-    mealList.innerHTML = `<li>${msg}</li>`;
+    mealList.innerHTML = `<li>${await readError(res)}</li>`;
     return;
   }
 
@@ -201,12 +202,11 @@ async function loadMeals() {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
-
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
       const delRes = await apiFetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
       if (!delRes.ok) showToast(await readError(delRes), "error");
-      setTimeout(loadMeals, 250);
+      setTimeout(loadMeals, 200);
     });
 
     li.appendChild(textSpan);
@@ -227,14 +227,23 @@ mealButton?.addEventListener("click", async () => {
   });
 
   if (!res.ok) {
-    showToast(await readError(res), "error");
+    setMealsMsg(await readError(res), "error");
     return;
   }
 
-  showToast("✔ Meal added successfully", "success");
+  // ✅ your requested message
+  setMealsMsg(`${day} meal saved`, "success");
+
   mealInput.value = "";
   mealDay.value = "";
   loadMeals();
+});
+
+mealInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    mealButton.click();
+  }
 });
 
 loadMeals();

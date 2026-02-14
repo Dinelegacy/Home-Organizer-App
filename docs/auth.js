@@ -1,16 +1,16 @@
 const API_BASE = "http://127.0.0.1:3000";
 
-/* ---------- Toast (keep) ---------- */
 function showToast(message, type = "info") {
     const el = document.getElementById("toast");
     if (!el) return;
+
     el.className = `toast show ${type}`;
-    el.textContent = message;
+    el.innerHTML = message;
+
     clearTimeout(window.__toastTimer);
     window.__toastTimer = setTimeout(() => {
         el.className = "toast";
-        el.textContent = "";
-    }, 2600);
+    }, 1600); // shorter, modern feel
 }
 
 /* ---------- Inline red message ---------- */

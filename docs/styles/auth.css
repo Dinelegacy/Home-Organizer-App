@@ -110,29 +110,60 @@
 }
 
 /* show animation */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(20px);
+    width: auto;
+    max-width: 90vw;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s ease;
+    z-index: 9999;
+}
+
+/* Toast (APP page) */
+.toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(20px);
+    width: auto;
+    max-width: 90vw;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s ease;
+    z-index: 99999;
+}
+
 .toast.show {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
 
-/* success style */
+/* ✅ force GREEN */
 .toast.success {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #10b981;
+    background: transparent !important;
+    color: #2f9e44 !important;
+    /* cart green */
+    box-shadow: none !important;
+    border: none !important;
 }
 
-/* error style */
+/* error stays red box */
 .toast.error {
     background: #fef2f2;
-    color: #7f1d1d;
+    color: #b91c1c;
     border: 1px solid #ef4444;
-}
-
-/* info */
-.toast.info {
-    background: #111827;
-    color: white;
 }
 
 .passwordWrapper {
