@@ -278,6 +278,7 @@ textarea:focus {
     color: var(--primary);
     font-weight: 600;
     text-decoration: none;
+    font-size: 14px;
 }
 
 .footer a:hover {
