@@ -74,9 +74,9 @@
     transform: translateY(-18px);
   }
 
-  .heroOverlay h2 {
+  /*   .heroOverlay h2 {
     font-size: 28px;
-  }
+  } */
 }
 
 /* FEATURES — make them blend with body (less “big cards”) */
