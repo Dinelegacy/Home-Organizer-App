@@ -3,18 +3,18 @@ function showToast(message, type = "info") {
   if (!el) return;
 
   el.className = `toast show ${type}`;
-  el.textContent = message;
+  el.innerHTML = message;
 
   clearTimeout(window.__toastTimer);
   window.__toastTimer = setTimeout(() => {
     el.className = "toast";
-    el.textContent = "";
-  }, 2600);
+  }, 3200); // stays a bit longer now
 }
 
 const API_BASE = "http://127.0.0.1:3000";
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
+
 const TOKEN = localStorage.getItem("token");
 if (!TOKEN) {
   window.location.href = "login.html";
@@ -28,7 +28,6 @@ function authHeaders(extra = {}) {
 }
 
 async function readError(res) {
-  // try JSON first, fallback to text
   const ct = res.headers.get("content-type") || "";
   if (ct.includes("application/json")) {
     const body = await res.json().catch(() => ({}));
@@ -44,7 +43,6 @@ async function apiFetch(url, options = {}) {
     headers: authHeaders(options.headers || {}),
   });
 
-  // helpful debug
   if (!res.ok) {
     let errText = "";
     try {
@@ -56,29 +54,26 @@ async function apiFetch(url, options = {}) {
   return res;
 }
 
-document.getElementById("logoutBtn").addEventListener("click", () => {
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
   localStorage.removeItem("token");
   window.location.href = "login.html";
 });
 
-// ---- ITEMS ----
+/* =========================
+   ITEMS + SEARCH
+========================= */
+
 const list = document.getElementById("missing-list");
 const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");
+const itemSearch = document.getElementById("item-search"); // <-- add this input in app.html
 
-async function loadItems() {
-  const res = await apiFetch(ITEMS_URL);
+let itemsCache = [];
 
-  if (!res.ok) {
-    const msg = await readError(res);
-    list.innerHTML = `<li>${msg}</li>`;
-    return;
-  }
-
-  const data = await res.json();
+function renderItems(items) {
   list.innerHTML = "";
 
-  data.forEach((item) => {
+  items.forEach((item) => {
     const li = document.createElement("li");
 
     const textSpan = document.createElement("span");
@@ -88,6 +83,7 @@ async function loadItems() {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
+
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
       const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
@@ -101,7 +97,50 @@ async function loadItems() {
   });
 }
 
-button.addEventListener("click", async () => {
+function applyItemFilter() {
+  const q = (itemSearch?.value || "").trim().toLowerCase();
+
+  const filtered = q
+    ? itemsCache.filter((i) => i.text.toLowerCase().includes(q))
+    : itemsCache;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <li class="emptyState">
+        🔍 No items found<br/>
+        <small>Try another keyword.</small>
+      </li>
+    `;
+    return;
+  }
+
+  renderItems(filtered);
+}
+
+async function loadItems() {
+  const res = await apiFetch(ITEMS_URL);
+
+  if (!res.ok) {
+    const msg = await readError(res);
+    list.innerHTML = `<li>${msg}</li>`;
+    return;
+  }
+
+  itemsCache = await res.json();
+  applyItemFilter();
+}
+
+itemSearch?.addEventListener("input", applyItemFilter);
+
+// Enter key = add item
+input?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    button?.click();
+  }
+});
+
+button?.addEventListener("click", async () => {
   const text = input.value.trim();
   if (!text) return;
 
@@ -117,30 +156,26 @@ button.addEventListener("click", async () => {
   }
 
   input.value = "";
+  showToast("✔ Item added successfully", "success");
   loadItems();
 });
 
 loadItems();
 
-// ---- MEALS ----
+/* =========================
+   MEALS
+========================= */
+
 const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
 const mealDay = document.getElementById("meal-day");
 
-// Enter key = Add item
-input.addEventListener("keydown", (e) => {
+// Enter key = add meal
+mealInput?.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
-    button.click();
-  }
-});
-
-// Enter key = Add meal
-mealInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    mealButton.click();
+    mealButton?.click();
   }
 });
 
@@ -166,10 +201,11 @@ async function loadMeals() {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
+
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
       const delRes = await apiFetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
-      if (!delRes.ok) alert(await readError(delRes));
+      if (!delRes.ok) showToast(await readError(delRes), "error");
       setTimeout(loadMeals, 250);
     });
 
@@ -179,7 +215,7 @@ async function loadMeals() {
   });
 }
 
-mealButton.addEventListener("click", async () => {
+mealButton?.addEventListener("click", async () => {
   const day = mealDay.value;
   const text = mealInput.value.trim();
   if (!day || !text) return;
@@ -191,10 +227,11 @@ mealButton.addEventListener("click", async () => {
   });
 
   if (!res.ok) {
-    alert(await readError(res));
+    showToast(await readError(res), "error");
     return;
   }
 
+  showToast("✔ Meal added successfully", "success");
   mealInput.value = "";
   mealDay.value = "";
   loadMeals();

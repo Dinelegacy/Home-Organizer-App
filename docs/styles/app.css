@@ -153,3 +153,20 @@ li.removing {
         transform: translateX(-20px);
     }
 }
+
+.emptyState {
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    border: 1px dashed var(--border);
+    background: #fafafa;
+    padding: 20px;
+    font-weight: 600;
+}
+
+.emptyState small {
+    display: block;
+    margin-top: 6px;
+    font-weight: 400;
+    color: var(--muted);
+}
