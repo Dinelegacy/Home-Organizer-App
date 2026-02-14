@@ -1,29 +1,69 @@
-<link rel="stylesheet" href="./styles/base.css" />
-<link rel="stylesheet" href="./styles/auth.css" />
+<!DOCTYPE html>
+<html lang="en">
 
-<form class="authForm" action="https://formspree.io/f/xbdagndo" method="POST">
-    <!-- anti-spam (hidden) -->
-    <input type="text" name="_gotcha" style="display:none" />
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback | Home Organizer</title>
 
-    <label class="field">
-        <span>Name (optional)</span>
-        <input type="text" name="name" placeholder="Your name" />
-    </label>
+    <link rel="stylesheet" href="./styles/base.css">
+    <link rel="stylesheet" href="./styles/auth.css">
+</head>
 
-    <label class="field">
-        <span>Email</span>
-        <input type="email" name="email" placeholder="your@email.com" required />
-    </label>
+<body>
+    <div class="container">
+        <header class="topbar">
+            <a href="index.html" class="brand">
+                <img src="./assets/images/logo.png" class="logo" alt="Home Organizer logo" />
+                <div>
+                    <h1>Home Organizer</h1>
+                    <p class="subtitle">Send feedback to improve the app</p>
+                </div>
+            </a>
 
-    <label class="field">
-        <span>Message</span>
-        <textarea name="message" rows="4" placeholder="Write your feedback..." required></textarea>
-    </label>
+            <nav class="nav">
+                <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+                <div class="menu" id="menu">
+                    <a class="menuLink" href="index.html">Home</a>
+                    <a class="menuLink" href="login.html">Login</a>
+                    <a class="menuLink" href="register.html">Register</a>
+                    <a class="menuLink" href="feedback.html">Feedback</a>
+                </div>
+            </nav>
+        </header>
 
-    <input type="hidden" name="_subject" value="New Feedback - Home Organizer" />
+        <main class="authWrap">
+            <section class="card authCard">
+                <header class="authHeader">
+                    <h2>Feedback</h2>
+                    <p class="authSub">Tell us what to improve. we read every message.</p>
+                </header>
 
-    <!-- where to go after submit -->
-    <input type="hidden" name="_next" value="landing.html" />
+                <form class="authForm" action="https://formspree.io/f/xbdagndo" method="POST">
+                    <label class="field">
+                        <span>Name (optional)</span>
+                        <input type="text" name="name" placeholder="Your name" />
+                    </label>
 
-    <button class="btn full" type="submit">Send Feedback</button>
-</form>
+                    <label class="field">
+                        <span>Email (optional)</span>
+                        <input type="email" name="email" placeholder="your@email.com" />
+                    </label>
+
+                    <label class="field">
+                        <span>Message</span>
+                        <textarea name="message" rows="5" placeholder="Write your feedback..." required></textarea>
+                    </label>
+
+                    <input type="hidden" name="_subject" value="New Feedback - Home Organizer" />
+
+                    <button class="btn full" type="submit">Send Feedback</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="./menu.js"></script>
+</body>
+
+</html>

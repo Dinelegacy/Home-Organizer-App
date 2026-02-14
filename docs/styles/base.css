@@ -273,3 +273,14 @@ textarea:focus {
     border-color: var(--accent);
     box-shadow: 0 0 0 4px rgba(47, 158, 68, 0.15);
 }
+
+.footer a {
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
