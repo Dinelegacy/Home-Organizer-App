@@ -15,6 +15,11 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Home Organizer API is running");
+});
+
+
 let db;
 
 (async () => {
