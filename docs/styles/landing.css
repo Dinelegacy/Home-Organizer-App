@@ -64,11 +64,12 @@
   flex-wrap: wrap;
 }
 
-@media (max-width: 370px) {
+@media (max-width: 375px) {
   h1 {
-    font-size: 24px;
+    font-size: 22px;
   }
 }
+
 
 @media (max-width: 430px) {
 
