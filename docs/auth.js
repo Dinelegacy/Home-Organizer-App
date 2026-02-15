@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:3000";
+const API_BASE = "https://home-organizer-app-production.up.railway.app";
 
 function showToast(message, type = "info") {
     const el = document.getElementById("toast");

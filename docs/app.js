@@ -12,7 +12,7 @@ function showToast(message, type = "info") {
   }, 2000);
 }
 
-const API_BASE = "http://127.0.0.1:3000";
+const API_BASE = "https://home-organizer-app-production.up.railway.app";
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
 
@@ -85,7 +85,6 @@ function renderItems(items) {
   });
 }
 
-// ✅ Search: show "not found" ONLY when typing & no match (NOT when list empty)
 if (itemSearch) {
   itemSearch.addEventListener("input", () => {
     const q = itemSearch.value.trim().toLowerCase();
@@ -231,7 +230,6 @@ mealButton?.addEventListener("click", async () => {
     return;
   }
 
-  // ✅ your requested message
   setMealsMsg(`${day} meal saved`, "success");
 
   mealInput.value = "";
