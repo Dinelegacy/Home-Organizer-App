@@ -30,18 +30,20 @@
     gap: 14px;
 }
 
-/* Inline form error message */
 .formMsg {
     margin-top: 10px;
     font-size: 14px;
     font-weight: 600;
-    color: #dc2626;
-    /* strong red */
-    display: none;
+    min-height: 20px;
+    /* reserve space */
+    line-height: 1.3;
+    color: var(--danger);
+    display: block;
+    /* always visible but empty */
 }
 
-.formMsg.show {
-    display: block;
+.formMsg:empty {
+    margin-top: 0;
 }
 
 .field {
