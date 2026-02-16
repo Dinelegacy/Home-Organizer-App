@@ -30,20 +30,31 @@
     gap: 14px;
 }
 
+/* Inline form message (error/success) */
 .formMsg {
-    margin-top: 10px;
+    margin: 10px 0 0;
     font-size: 14px;
-    font-weight: 600;
-    min-height: 20px;
-    /* reserve space */
+    font-weight: 700;
     line-height: 1.3;
-    color: var(--danger);
+
+    /* IMPORTANT: never hide it */
     display: block;
-    /* always visible but empty */
+    min-height: 18px;
+    /* keeps layout stable */
 }
 
-.formMsg:empty {
-    margin-top: 0;
+/* Colors */
+.formMsg.error {
+    color: var(--danger);
+}
+
+.formMsg.success {
+    color: var(--accent);
+}
+
+/* your logo green */
+.formMsg.info {
+    color: var(--muted);
 }
 
 .field {

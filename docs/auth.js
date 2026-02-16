@@ -14,19 +14,14 @@ function showToast(message, type = "info") {
 }
 
 /* ---------- Inline red message ---------- */
-function setFormMsg(message = "") {
-    const el = document.getElementById("formMsg"); // must exist in HTML
+function setFormMsg(message = "", type = "info") {
+    const el = document.getElementById("formMsg");
     if (!el) return;
 
-    if (!message) {
-        el.textContent = "";
-        el.classList.remove("show");
-        return;
-    }
-
     el.textContent = message;
-    el.classList.add("show");
+    el.className = `formMsg ${type}`;
 }
+
 
 async function readJsonMessage(res) {
     const ct = res.headers.get("content-type") || "";
@@ -107,7 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                setFormMsg("Account created. Please login.");
+                setFormMsg("Account created. Please login.", "success");
+                showToast("Account created. Please login.", "success");
                 setTimeout(() => (window.location.href = "login.html"), 2000);
             } catch (err) {
                 showToast("Server is not running (cannot connect).", "error");
