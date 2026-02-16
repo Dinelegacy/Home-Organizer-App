@@ -203,11 +203,20 @@ async function loadMeals() {
     removeBtn.setAttribute("aria-label", "Delete");
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
-      const delRes = await apiFetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
-      if (!delRes.ok) showToast(await readError(delRes), "error");
-      setTimeout(loadMeals, 200);
-    });
 
+      const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, {
+        method: "DELETE",
+      });
+
+      if (!delRes.ok) {
+        showToast(await readError(delRes), "error");
+        return;
+      }
+
+      setItemsMsg(`${item.text} deleted`, "error");
+
+      setTimeout(loadItems, 200);
+    });
     li.appendChild(textSpan);
     li.appendChild(removeBtn);
     mealList.appendChild(li);

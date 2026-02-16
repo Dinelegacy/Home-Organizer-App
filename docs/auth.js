@@ -28,7 +28,6 @@ function setFormMsg(message = "") {
     el.classList.add("show");
 }
 
-/* ---------- Read backend message safely ---------- */
 async function readJsonMessage(res) {
     const ct = res.headers.get("content-type") || "";
     if (ct.includes("application/json")) {
