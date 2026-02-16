@@ -58,7 +58,6 @@ function setItemsMsg(text = "", type = "") {
   if (text) setTimeout(() => setItemsMsg("", ""), 2000);
 }
 
-// render list based on a provided array
 function renderItems(items) {
   list.innerHTML = "";
 
@@ -72,10 +71,20 @@ function renderItems(items) {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
+
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
+
       const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, { method: "DELETE" });
-      if (!delRes.ok) showToast(await readError(delRes), "error");
+
+      if (!delRes.ok) {
+        showToast(await readError(delRes), "error");
+        return;
+      }
+
+      // ✅ item deleted message
+      setItemsMsg(`${item.text} deleted`, "error");
+
       setTimeout(loadItems, 200);
     });
 
@@ -89,14 +98,12 @@ if (itemSearch) {
   itemSearch.addEventListener("input", () => {
     const q = itemSearch.value.trim().toLowerCase();
 
-    // empty search: reset + no message
     if (!q) {
       setItemsMsg("", "");
       renderItems(ALL_ITEMS);
       return;
     }
 
-    // if there are 0 items total: no message
     if (ALL_ITEMS.length === 0) {
       setItemsMsg("", "");
       renderItems([]);
@@ -123,14 +130,13 @@ async function loadItems() {
 
   ALL_ITEMS = await res.json();
 
-  // keep search applied after reload
   const q = (itemSearch?.value || "").trim().toLowerCase();
   if (q) {
     const filtered = ALL_ITEMS.filter((it) =>
       (it.text || "").toLowerCase().includes(q)
     );
     renderItems(filtered);
-    if (filtered.length === 0 && ALL_ITEMS.length > 0) setItemsMsg(`"${q}" not found`, "error");
+    if (filtered.length === 0 && ALL_ITEMS.length > 0) setItemsMsg(`No items found`, "info");
     else setItemsMsg("", "");
   } else {
     renderItems(ALL_ITEMS);
@@ -201,22 +207,22 @@ async function loadMeals() {
     removeBtn.textContent = "×";
     removeBtn.classList.add("iconBtn");
     removeBtn.setAttribute("aria-label", "Delete");
+
     removeBtn.addEventListener("click", async () => {
       li.classList.add("removing");
 
-      const delRes = await apiFetch(`${ITEMS_URL}/${item._id}`, {
-        method: "DELETE",
-      });
+      const delRes = await apiFetch(`${MEALS_URL}/${meal._id}`, { method: "DELETE" });
 
       if (!delRes.ok) {
         showToast(await readError(delRes), "error");
         return;
       }
 
-      setItemsMsg(`${item.text} deleted`, "error");
+      setMealsMsg(`${meal.day} meal deleted`, "error");
 
-      setTimeout(loadItems, 200);
+      setTimeout(loadMeals, 200);
     });
+
     li.appendChild(textSpan);
     li.appendChild(removeBtn);
     mealList.appendChild(li);
