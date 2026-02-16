@@ -30,18 +30,26 @@
     gap: 14px;
 }
 
-/* Inline form error message */
+/* Inline form message */
 .formMsg {
     margin-top: 10px;
     font-size: 14px;
-    font-weight: 600;
-    color: #dc2626;
-    /* strong red */
+    font-weight: 700;
     display: none;
+    line-height: 1.3;
 }
 
 .formMsg.show {
     display: block;
+}
+
+.formMsg.error {
+    color: #dc2626;
+
+}
+
+.formMsg.success {
+    color: #2f9e44;
 }
 
 .field {
