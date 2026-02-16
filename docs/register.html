@@ -27,9 +27,11 @@
                     <a class="menuLink" href="login.html">Login</a>
                     <a class="menuLink" href="register.html">Register</a>
                     <a class="menuLink" href="feedback.html">Feedback</a>
+
                 </div>
             </nav>
         </header>
+        <div id="toast" class="toast"></div>
 
         <main class="authWrap">
             <section class="authCard">
@@ -46,10 +48,13 @@
 
                     <label class="field passwordField">
                         <span>Password</span>
+
                         <div class="passwordWrapper">
                             <input id="password" type="password" placeholder="Create a password"
                                 autocomplete="new-password" required />
-                            <button type="button" class="togglePassword" aria-label="Toggle password">👁</button>
+                            <button type="button" class="togglePassword" aria-label="Toggle password">
+                                👁
+                            </button>
                         </div>
                     </label>
 
@@ -57,13 +62,12 @@
                         <span>Confirm Password</span>
                         <div class="passwordWrapper">
                             <input id="confirmPassword" type="password" placeholder="Repeat your password" required />
-                            <button type="button" class="togglePassword" aria-label="Toggle password">👁</button>
+                            <button type="button" class="togglePassword" aria-label="Toggle password">
+                                👁
+                            </button>
                         </div>
                     </label>
-
-                    <!-- Inline message (SUCCESS/ERROR) -->
                     <p class="formMsg" id="formMsg" aria-live="polite"></p>
-
                     <button class="btn full" type="submit">Create account</button>
 
                     <p class="authFoot">
@@ -73,7 +77,6 @@
             </section>
         </main>
     </div>
-
     <script src="menu.js"></script>
     <script src="auth.js"></script>
 </body>
