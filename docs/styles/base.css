@@ -91,6 +91,12 @@ h1 {
     letter-spacing: -0.4px;
 }
 
+@media (max-width: 375px) {
+    h1 {
+        font-size: 22px;
+    }
+}
+
 .subtitle {
     margin: 4px 0 0;
     color: var(--muted);
