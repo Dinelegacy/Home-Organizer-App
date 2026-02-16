@@ -108,6 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 setFormMsg("Account created ✅ Please login!!.");
+                showToast("Account created successfully ✅ Please login.", "success");
                 setTimeout(() => (window.location.href = "login.html"), 2000);
             } catch (err) {
                 showToast("Server is not running (cannot connect).", "error");
