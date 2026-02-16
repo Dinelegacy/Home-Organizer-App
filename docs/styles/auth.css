@@ -54,7 +54,7 @@
     color: var(--text);
 }
 
-/* Inputs already styled in base.css; we just ensure they fill */
+
 .field input {
     width: 100%;
 }

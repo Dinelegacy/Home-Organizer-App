@@ -15,7 +15,7 @@ function showToast(message, type = "info") {
 
 /* ---------- Inline red message ---------- */
 function setFormMsg(message = "") {
-    const el = document.getElementById("formMsg"); // must exist in HTML
+    const el = document.getElementById("formMsg");
     if (!el) return;
 
     if (!message) {
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            setFormMsg(""); // clear old error
+            setFormMsg(""); // 
 
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -107,8 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                setFormMsg("Account created ✅ Please login.");
-                showToast("Account created ✅ Redirecting…", "success");
+                setFormMsg("Account created ✅ Please login!!.");
                 setTimeout(() => (window.location.href = "login.html"), 2000);
             } catch (err) {
                 showToast("Server is not running (cannot connect).", "error");
