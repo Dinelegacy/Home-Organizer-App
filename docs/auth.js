@@ -1,6 +1,5 @@
 const API_BASE = "https://home-organizer-app-production.up.railway.app";
 
-/* ---------- Inline message (login + register) ---------- */
 function setFormMsg(message = "", type = "") {
     const el = document.getElementById("formMsg");
     if (!el) return;
@@ -63,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("token", data.token);
                 window.location.href = "app.html";
             } catch (err) {
-                setFormMsg("Server is not running (cannot connect).", "error");
+                setFormMsg("Server is not running (cannot connect)", "error");
             }
         });
     }
@@ -95,10 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     return;
                 }
 
-                setFormMsg("Account created. Please login.", "success");
+                setFormMsg("Account created. Please login", "success");
                 setTimeout(() => (window.location.href = "login.html"), 1500);
             } catch (err) {
-                setFormMsg("Server is not running (cannot connect).", "error");
+                setFormMsg("Server is not running (cannot connect)", "error");
             }
         });
     }
