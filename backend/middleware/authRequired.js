@@ -4,7 +4,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 function authRequired(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        return res.status(401).json({ message: "No token provided" });
+        return res.status(401).json({ message: "Please log in to continue" });
     }
     const token = authHeader.split(" ")[1];
     try {
@@ -13,7 +13,7 @@ function authRequired(req, res, next) {
         next();
     }
     catch (error) {
-        return res.status(401).json({ message: "invalid token" });
+        return res.status(401).json({ message: "Your session has expired. Please log in again" });
     }
 }
 
