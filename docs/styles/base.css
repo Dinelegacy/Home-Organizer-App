@@ -40,20 +40,14 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-
-    /* full width */
     width: 100vw;
     margin-left: calc(-50vw + 50%);
-
-    /* match page, not a white “bubble” */
     background: transparent;
-
     padding: 14px 20px;
     margin-top: 0;
     margin-bottom: 14px;
-
-    /* clean divider like the sample */
     border-bottom: 1px solid var(--border);
+    text-align: center;
 
 }
 
@@ -65,6 +59,14 @@ body {
     min-width: 0;
     text-decoration: none;
     color: inherit;
+    flex: 1;
+}
+
+.brand>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     flex: 1;
 }
 
@@ -101,8 +103,10 @@ h1 {
     margin: 4px 0 0;
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.35;
+    line-height: 1.4;
     font-weight: 500;
+
+    max-width: 220px;
 }
 
 /* ---------- NAV + MENU ---------- */
@@ -120,43 +124,38 @@ h1 {
     display: none;
 }
 
-/* hamburger button */
-
 .menuBtn {
-    background: transparent;
+    width: 48px;
+    height: 48px;
     border: none;
-    padding: 6px;
-    font-size: 40px;
-    cursor: pointer;
-    line-height: 1;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+
     display: grid;
     place-items: center;
+
+    font-size: 35px;
+    line-height: 1;
+    cursor: pointer;
 }
 
 .menuBtn:active {
     transform: scale(0.98);
 }
 
-.menuBtn[aria-expanded="true"] {
-    box-shadow: 0 14px 30px rgba(17, 24, 39, .12);
-}
-
-/* dropdown */
 .menu {
     position: absolute;
     top: calc(100% + 8px);
-    /* small gap from the button */
-    left: 50%;
-    transform: translateX(-50%);
-    /* centered under the button */
-    width: 180px;
+    right: 0;
+    /* attach to hamburger */
+    width: 190px;
     /* smaller */
-    padding: 6px;
-    /* less empty space */
+    padding: 10px;
     border: 1px solid var(--border);
-    border-radius: 14px;
-    background: #fff;
-    box-shadow: 0 18px 35px rgba(0, 0, 0, .14);
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .12);
     display: none;
     z-index: 9999;
 }
@@ -166,18 +165,19 @@ h1 {
 }
 
 .menuLink {
-    padding: 10px 12px;
-    /* tighter */
-    border-radius: 12px;
-    text-decoration: none;
-    color: var(--text);
-    font-weight: 800;
+    padding: 12px 14px;
     font-size: 16px;
+    text-decoration: none;
+}
+
+.menuLink:visited {
+    color: var(--text);
 }
 
 .menuLink:hover {
     background: #f3f4f6;
 }
+
 
 /* show desktop links on large screens if you want */
 @media (min-width: 720px) {
