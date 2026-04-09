@@ -18,9 +18,8 @@
 <body>
   <div class="container">
 
-    <!-- Top bar -->
     <header class="appHeader">
-      <!-- Logo goes back to landing -->
+
       <a href="index.html" class="brand" aria-label="Go to home">
         <img src="./assets/images/logo.png" alt="Home Organizer logo" class="logo" />
         <div class="brandText">
@@ -35,13 +34,8 @@
       <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
     </header>
 
-    <!-- Global toast -->
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-    <!-- Main -->
     <main class="grid">
-
-      <!-- Missing Items -->
       <section class="card">
         <h2>Missing Items</h2>
 
@@ -50,16 +44,13 @@
           <button id="missing-item" type="button">Add</button>
         </div>
 
-        <!-- Inline message (green/red) -->
         <p id="itemsMsg" class="inlineMsg" aria-live="polite"></p>
 
-        <!-- Optional: search -->
         <input type="text" id="item-search" placeholder="Search items..." autocomplete="off" />
 
         <ul id="missing-list"></ul>
       </section>
 
-      <!-- Weekly Meals -->
       <section class="card">
         <h2>Weekly Meals</h2>
 
@@ -79,7 +70,6 @@
           <button id="meal-button" type="button">Add</button>
         </div>
 
-        <!-- Inline message (green/red) -->
         <p id="mealsMsg" class="inlineMsg" aria-live="polite"></p>
 
         <ul id="meal-list"></ul>
