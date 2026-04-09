@@ -1,4 +1,4 @@
-const API_BASE = "https://home-organizer-app-production.up.railway.app";
+import { API_BASE } from "./config.js";
 
 function setFormMsg(message = "", type = "") {
     const el = document.getElementById("formMsg");

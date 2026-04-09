@@ -1,3 +1,5 @@
+import { API_BASE } from "./config.js";
+
 function showLoader() {
   document.getElementById("loader")?.classList.remove("hidden");
 }
@@ -19,8 +21,6 @@ function showToast(message, type = "info") {
     el.textContent = "";
   }, 2000);
 }
-
-const API_BASE = "https://home-organizer-app.onrender.com";
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
 
