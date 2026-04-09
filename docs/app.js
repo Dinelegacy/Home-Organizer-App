@@ -1,3 +1,11 @@
+function showLoader() {
+  document.getElementById("loader")?.classList.remove("hidden");
+}
+
+function hideLoader() {
+  document.getElementById("loader")?.classList.add("hidden");
+}
+
 function showToast(message, type = "info") {
   const el = document.getElementById("toast");
   if (!el) return;
@@ -12,7 +20,7 @@ function showToast(message, type = "info") {
   }, 2000);
 }
 
-const API_BASE = "https://home-organizer-app-production.up.railway.app";
+const API_BASE = "https://home-organizer-app.onrender.com";
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
 
@@ -32,9 +40,18 @@ async function readError(res) {
   const text = await res.text().catch(() => "");
   return text || `Error ${res.status}`;
 }
-
 async function apiFetch(url, options = {}) {
-  return fetch(url, { ...options, headers: authHeaders(options.headers || {}) });
+  showLoader();
+
+  try {
+    const res = await fetch(url, {
+      ...options,
+      headers: authHeaders(options.headers || {}),
+    });
+    return res;
+  } finally {
+    hideLoader();
+  }
 }
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
@@ -42,7 +59,6 @@ document.getElementById("logoutBtn")?.addEventListener("click", () => {
   window.location.href = "login.html";
 });
 
-/* ---------- ITEMS ---------- */
 const list = document.getElementById("missing-list");
 const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");
@@ -82,7 +98,7 @@ function renderItems(items) {
         return;
       }
 
-      // ✅ item deleted message
+
       setItemsMsg(`${item.text} deleted`, "error");
 
       setTimeout(loadItems, 200);
