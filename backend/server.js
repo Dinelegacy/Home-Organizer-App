@@ -35,10 +35,9 @@ let db;
     app.use("/api/meals", meals);
     app.use("/api/users", users);
 
-    app.listen(PORT, '0.0.0.0', () =>
-      console.log(`Server running on port ${PORT}`)
+    app.listen(PORT, () =>
+      console.log(`Server running on http://localhost:${PORT}`)
     );
-
   } catch (err) {
     console.error("Failed to connect to DB:", err);
     process.exit(1);
