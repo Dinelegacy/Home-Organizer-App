@@ -1,81 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login | Home Organizer</title>
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/auth.css" />
-    <link rel="icon" type="image/x-icon" href="assets/favicon_io/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon_io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon_io/favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon_io/apple-touch-icon.png">
-    <link rel="manifest" href="assets/favicon_io/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta http-equiv="refresh" content="0; url=pages/login.html" />
+  <title>Redirecting...</title>
+  <script>
+    window.location.replace("pages/login.html");
+  </script>
 </head>
-
-<body>
-    <div class="container">
-        <header class="topbar">
-            <a href="index.html" class="brand">
-                <img src="./assets/images/logo.png" class="logo" alt="Home Organizer logo" />
-                <div>
-                    <h1>Home Organizer</h1>
-                    <p class="subtitle">
-                        Track missing items.<br>
-                        Plan meals for the week
-                    </p>
-                </div>
-            </a>
-
-            <nav class="nav">
-                <button class="menuBtn" id="menuBtn" aria-label="Open menu">☰</button>
-                <div class="menu" id="menu">
-                    <a class="menuLink" href="index.html">Home</a>
-                    <a class="menuLink" href="login.html">Login</a>
-                    <a class="menuLink" href="register.html">Register</a>
-                    <a class="menuLink" href="feedback.html">Feedback</a>
-                </div>
-            </nav>
-        </header>
-
-        <main class="authWrap">
-            <section class="authCard">
-                <header class="authHeader">
-                    <h2>Login</h2>
-                    <p class="authSub">Welcome back. Continue where you left off.</p>
-                </header>
-
-                <form class="authForm" id="loginForm">
-                    <label class="field">
-                        <span>Email</span>
-                        <input id="email" type="email" placeholder="name@email.com" autocomplete="email" required />
-                    </label>
-
-                    <label class="field passwordField">
-                        <span>Password</span>
-
-                        <div class="passwordWrapper">
-                            <input id="password" type="password" placeholder="••••••••" autocomplete="current-password"
-                                required />
-                            <button type="button" class="togglePassword" aria-label="Show password" aria-pressed="false">
-                                Show
-                            </button>
-                        </div>
-                    </label>
-                    <p class="formMsg" id="formMsg" aria-live="polite"></p>
-                    <button class="btn full" type="submit">Login</button>
-
-                    <p class="authFoot">
-                        No account? <a href="register.html">Register</a>
-                    </p>
-                </form>
-            </section>
-        </main>
-    </div>
-    <script src="menu.js" type="module"></script>
-    <script src="auth.js" type="module"></script>
-
-</body>
-
+<body></body>
 </html>

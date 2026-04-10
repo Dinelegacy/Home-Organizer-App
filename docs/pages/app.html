@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home Organizer | App</title>
+
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/app.css">
+  <link rel="icon" type="image/x-icon" href="../assets/favicon_io/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon_io/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon_io/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon_io/apple-touch-icon.png">
+  <link rel="manifest" href="../assets/favicon_io/site.webmanifest">
+</head>
+
+<body>
+  <div class="container">
+
+    <header class="appHeader">
+
+      <a href="index.html" class="brand" aria-label="Go to home">
+        <img src="../assets/images/logo.png" alt="Home Organizer logo" class="logo" />
+        <div class="brandText">
+          <h1>Home Organizer</h1>
+          <p class="subtitle">
+            Track missing items.<br>
+            Plan meals for the week
+          </p>
+        </div>
+      </a>
+
+      <button id="logoutBtn" class="btn ghost" type="button">Logout</button>
+    </header>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <main class="grid">
+      <section class="card">
+        <div class="sectionTitle">
+          <h2>Missing Items</h2>
+          <span id="items-count" class="countBadge">0</span>
+        </div>
+
+        <div class="formRow">
+          <input type="text" id="missing-input" placeholder="What is missing?" autocomplete="off" />
+          <button id="missing-item" type="button">Add</button>
+        </div>
+
+        <p id="itemsMsg" class="inlineMsg" aria-live="polite"></p>
+
+        <input type="text" id="item-search" placeholder="Search items..." autocomplete="off" />
+
+        <div class="listContainer">
+          <ul id="missing-list"></ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="sectionTitle">
+          <h2>Weekly Meals</h2>
+        </div>
+
+        <select id="meal-day">
+          <option value="">Select day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
+
+        <div class="formRow">
+          <input type="text" id="meal-input" placeholder="What you will eat?" autocomplete="off" />
+          <button id="meal-button" type="button">Add</button>
+        </div>
+
+        <p id="mealsMsg" class="inlineMsg" aria-live="polite"></p>
+
+        <div class="listContainer">
+          <ul id="meal-list"></ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+  <div id="loader" class="loader hidden"></div>
+  <script src="../scripts/app.js" type="module"></script>
+</body>
+
+</html>

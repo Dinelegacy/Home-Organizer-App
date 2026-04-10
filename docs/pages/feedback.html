@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feedback | Home Organizer</title>
+
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="icon" type="image/x-icon" href="../assets/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon_io/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/favicon_io/apple-touch-icon.png">
+    <link rel="manifest" href="../assets/favicon_io/site.webmanifest">
+</head>
+
+<body>
+    <div class="container">
+        <header class="topbar">
+            <a href="index.html" class="brand">
+                <img src="../assets/images/logo.png" class="logo" alt="Home Organizer logo" />
+                <div>
+                    <h1>Home Organizer</h1>
+                    <p class="subtitle">
+                        Track missing items.<br>
+                        Plan meals for the week
+                    </p>
+                </div>
+            </a>
+
+            <nav class="nav">
+                <button class="menuBtn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+                <div class="menu" id="menu">
+                    <a class="menuLink" href="index.html">Home</a>
+                    <a class="menuLink" href="login.html">Login</a>
+                    <a class="menuLink" href="register.html">Register</a>
+                    <a class="menuLink" href="feedback.html">Feedback</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="authWrap">
+            <section class="card authCard">
+                <header class="authHeader">
+                    <h2>Feedback</h2>
+                    <p class="authSub">Tell us what to improve </p>
+                </header>
+
+                <form class="authForm" action="https://formspree.io/f/xbdagndo" method="POST">
+                    <label class="field">
+                        <span>Name (optional)</span>
+                        <input type="text" name="name" placeholder="Your name" />
+                    </label>
+
+                    <label class="field">
+                        <span>Email (optional)</span>
+                        <input type="email" name="email" placeholder="your@email.com" />
+                    </label>
+
+                    <label class="field">
+                        <span>Message</span>
+                        <textarea name="message" rows="5" placeholder="Write your feedback..." required></textarea>
+                    </label>
+
+                    <input type="hidden" name="_subject" value="New Feedback - Home Organizer" />
+
+                    <button class="btn full" type="submit">Send Feedback</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script src="../scripts/menu.js" type="module"></script>
+</body>
+
+</html>
