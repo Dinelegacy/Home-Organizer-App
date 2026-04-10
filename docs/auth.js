@@ -1,10 +1,12 @@
 import { API_BASE } from "./config.js";
 
+const WAKE_DELAY_MS = 2500;
+const WAKE_MESSAGE = "Server is waking up. First request can take up to 60 seconds.";
+
 function setFormMsg(message = "", type = "") {
     const el = document.getElementById("formMsg");
     if (!el) return;
 
-    // reset
     el.textContent = "";
     el.classList.remove("show", "success", "error", "info");
 
@@ -24,37 +26,72 @@ async function readJsonMessage(res) {
     return `Request failed (${res.status})`;
 }
 
+async function fetchWithWakeNotice(url, options = {}, onWake) {
+    let wakeTimer = null;
+    if (typeof onWake === "function") {
+        wakeTimer = setTimeout(() => onWake(), WAKE_DELAY_MS);
+    }
+
+    try {
+        return await fetch(url, options);
+    } finally {
+        clearTimeout(wakeTimer);
+    }
+}
+
+function setSubmitState(form, isSubmitting, pendingLabel) {
+    const submitBtn = form?.querySelector('button[type="submit"]');
+    if (!submitBtn) return () => {};
+
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = isSubmitting;
+    submitBtn.textContent = isSubmitting ? pendingLabel : originalLabel;
+
+    return () => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+    };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
 
-    // password eye toggle
     document.querySelectorAll(".togglePassword").forEach((btn) => {
         btn.addEventListener("click", () => {
             const input = btn.parentElement.querySelector("input");
             if (!input) return;
-            input.type = input.type === "password" ? "text" : "password";
+            const isPassword = input.type === "password";
+            input.type = isPassword ? "text" : "password";
+            btn.textContent = isPassword ? "Hide" : "Show";
+            btn.setAttribute("aria-pressed", String(isPassword));
+            btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
         });
     });
 
-    // LOGIN
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             setFormMsg("");
+            const resetSubmit = setSubmitState(loginForm, true, "Signing in...");
 
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
 
             try {
-                const res = await fetch(`${API_BASE}/api/users/login`, {
+                const res = await fetchWithWakeNotice(
+                    `${API_BASE}/api/users/login`,
+                    {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
-                });
+                    },
+                    () => setFormMsg(WAKE_MESSAGE, "info")
+                );
 
                 if (!res.ok) {
                     setFormMsg(await readJsonMessage(res), "error");
+                    resetSubmit();
                     return;
                 }
 
@@ -62,16 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("token", data.token);
                 window.location.href = "app.html";
             } catch (err) {
-                setFormMsg("Server is not running (cannot connect)", "error");
+                setFormMsg("Cannot connect right now. Please wait a moment and try again.", "error");
+                resetSubmit();
             }
         });
     }
 
-    // REGISTER
     if (registerForm) {
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
             setFormMsg("");
+            const resetSubmit = setSubmitState(registerForm, true, "Creating account...");
 
             const email = document.getElementById("email").value.trim();
             const password = document.getElementById("password").value.trim();
@@ -79,25 +117,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (password !== confirmPassword) {
                 setFormMsg("Passwords do not match", "error");
+                resetSubmit();
                 return;
             }
 
             try {
-                const res = await fetch(`${API_BASE}/api/users/register`, {
+                const res = await fetchWithWakeNotice(
+                    `${API_BASE}/api/users/register`,
+                    {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ email, password }),
-                });
+                    },
+                    () => setFormMsg(WAKE_MESSAGE, "info")
+                );
 
                 if (!res.ok) {
                     setFormMsg(await readJsonMessage(res), "error");
+                    resetSubmit();
                     return;
                 }
 
                 setFormMsg("Account created. Please login", "success");
+                resetSubmit();
                 setTimeout(() => (window.location.href = "login.html"), 1500);
             } catch (err) {
-                setFormMsg("Server is not running (cannot connect)", "error");
+                setFormMsg("Cannot connect right now. Please wait a moment and try again.", "error");
+                resetSubmit();
             }
         });
     }

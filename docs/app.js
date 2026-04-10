@@ -1,5 +1,9 @@
 import { API_BASE } from "./config.js";
 
+const WAKE_DELAY_MS = 2500;
+const WAKE_COOLDOWN_MS = 12000;
+let lastWakeNoticeAt = 0;
+
 function showLoader() {
   document.getElementById("loader")?.classList.remove("hidden");
 }
@@ -19,7 +23,7 @@ function showToast(message, type = "info") {
   window.__toastTimer = setTimeout(() => {
     el.className = "toast";
     el.textContent = "";
-  }, 2000);
+  }, type === "info" ? 5000 : 2200);
 }
 const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
@@ -42,6 +46,13 @@ async function readError(res) {
 }
 async function apiFetch(url, options = {}) {
   showLoader();
+  const wakeTimer = setTimeout(() => {
+    const now = Date.now();
+    if (now - lastWakeNoticeAt >= WAKE_COOLDOWN_MS) {
+      showToast("Server is waking up. First request can take up to 60 seconds.", "info");
+      lastWakeNoticeAt = now;
+    }
+  }, WAKE_DELAY_MS);
 
   try {
     const res = await fetch(url, {
@@ -50,6 +61,7 @@ async function apiFetch(url, options = {}) {
     });
     return res;
   } finally {
+    clearTimeout(wakeTimer);
     hideLoader();
   }
 }
@@ -64,6 +76,7 @@ const input = document.getElementById("missing-input");
 const button = document.getElementById("missing-item");
 const itemsMsg = document.getElementById("itemsMsg");
 const itemSearch = document.getElementById("item-search");
+const itemsCount = document.getElementById("items-count");
 
 let ALL_ITEMS = [];
 
@@ -76,6 +89,15 @@ function setItemsMsg(text = "", type = "") {
 
 function renderItems(items) {
   list.innerHTML = "";
+  if (itemsCount) itemsCount.textContent = String(items.length);
+
+  if (items.length === 0) {
+    const li = document.createElement("li");
+    li.className = "emptyState";
+    li.textContent = "No missing items yet.";
+    list.appendChild(li);
+    return;
+  }
 
   items.forEach((item) => {
     const li = document.createElement("li");
@@ -189,12 +211,12 @@ input?.addEventListener("keydown", (e) => {
 
 loadItems();
 
-/* ---------- MEALS ---------- */
 const mealInput = document.getElementById("meal-input");
 const mealButton = document.getElementById("meal-button");
 const mealList = document.getElementById("meal-list");
 const mealDay = document.getElementById("meal-day");
 const mealsMsg = document.getElementById("mealsMsg");
+const mealsCount = document.getElementById("meals-count");
 
 function setMealsMsg(text = "", type = "") {
   if (!mealsMsg) return;
@@ -207,11 +229,21 @@ async function loadMeals() {
   const res = await apiFetch(MEALS_URL);
   if (!res.ok) {
     mealList.innerHTML = `<li>${await readError(res)}</li>`;
+    if (mealsCount) mealsCount.textContent = "0";
     return;
   }
 
   const data = await res.json();
   mealList.innerHTML = "";
+  if (mealsCount) mealsCount.textContent = String(data.length);
+
+  if (data.length === 0) {
+    const li = document.createElement("li");
+    li.className = "emptyState";
+    li.textContent = "No meals planned yet.";
+    mealList.appendChild(li);
+    return;
+  }
 
   data.forEach((meal) => {
     const li = document.createElement("li");

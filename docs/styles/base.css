@@ -1,164 +1,132 @@
 :root {
-    --bg: #f9f7f3;
-    /* warm background */
+    --bg: #f5f7fb;
+    --bg-soft: #eef2ff;
     --card: #ffffff;
-    --text: #1f2937;
-    --muted: #6b7280;
-    /* <-- WAS MISSING */
-    --border: #e5e7eb;
-
+    --text: #101828;
+    --muted: #667085;
+    --border: #e4e7ec;
     --primary: #f97316;
-    /* orange from logo */
     --primary-hover: #ea580c;
-    --accent: #2f9e44;
-    /* green from cart */
+    --accent: #16a34a;
     --danger: #dc2626;
+    --radius: 16px;
+    --shadow: 0 14px 40px rgba(16, 24, 40, 0.08);
 }
 
 * {
     box-sizing: border-box;
 }
 
+html,
 body {
     margin: 0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background: var(--bg);
+    min-height: 100%;
+}
+
+body {
+    font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
     color: var(--text);
+    background:
+        radial-gradient(circle at top, var(--bg-soft), transparent 45%),
+        var(--bg);
 }
 
-/* layout */
 .container {
-    width: min(720px, 92vw);
+    width: min(1120px, 92vw);
     margin: 0 auto;
-    padding: 18px 0 26px;
+    padding: 18px 0 32px;
+    min-height: 100vh;
 }
 
-/* ---------- TOPBAR / BRAND ---------- */
-.topbar {
-    position: relative;
+.topbar,
+.appHeader {
+    position: sticky;
+    top: 0;
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    background: transparent;
-    padding: 14px 20px;
-    margin-top: 0;
-    margin-bottom: 14px;
-    border-bottom: 1px solid var(--border);
-    text-align: center;
-
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) + 2px);
+    background: rgba(255, 255, 255, 0.84);
+    backdrop-filter: blur(8px);
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
-    /* tighter */
+    gap: 12px;
     min-width: 0;
-    text-decoration: none;
     color: inherit;
-    flex: 1;
+    text-decoration: none;
 }
 
-.brand>div {
+.brand>div,
+.brandText {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    flex: 1;
+    min-width: 0;
 }
 
 .logo {
     width: 48px;
     height: 48px;
+    border-radius: 12px;
     object-fit: contain;
     flex: 0 0 auto;
 }
 
-@media (min-width:520px) {
-    .logo {
-        width: 50px;
-        height: 50px;
-    }
-}
-
 h1 {
     margin: 0;
-    font-size: 24px;
-    line-height: 1.1;
+    font-size: 1.35rem;
     color: var(--primary);
     font-weight: 800;
-    letter-spacing: -0.4px;
-}
-
-@media (max-width: 375px) {
-    h1 {
-        font-size: 22px;
-    }
+    letter-spacing: -0.02em;
 }
 
 .subtitle {
-    margin: 4px 0 0;
+    margin: 3px 0 0;
     color: var(--muted);
-    font-size: 14px;
-    line-height: 1.4;
-    font-weight: 500;
-    text-align: left;
-
-    max-width: 220px;
+    font-size: 0.875rem;
+    line-height: 1.35;
 }
 
-/* ---------- NAV + MENU ---------- */
 .nav {
     position: relative;
-    /* IMPORTANT so menu positions under the button */
     display: flex;
-    gap: 10px;
     align-items: center;
-    flex: 0 0 auto;
+    gap: 10px;
 }
 
-/* desktop links (optional if you use them) */
 .navLinks {
     display: none;
 }
 
 .menuBtn {
-    width: 48px;
-    height: 48px;
-    border: none;
-    background: transparent;
-    padding: 0;
-    margin: 0;
-
-    display: grid;
-    place-items: center;
-
-    font-size: 35px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: #fff;
+    font-size: 1.4rem;
     line-height: 1;
     cursor: pointer;
-}
-
-.menuBtn:active {
-    transform: scale(0.98);
 }
 
 .menu {
     position: absolute;
     top: calc(100% + 8px);
     right: 0;
-    /* attach to hamburger */
-    width: 190px;
-    /* smaller */
-    padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    background: #ffffff;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .12);
+    width: 210px;
     display: none;
-    z-index: 9999;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: var(--shadow);
 }
 
 .menu.open {
@@ -166,51 +134,31 @@ h1 {
 }
 
 .menuLink {
-    padding: 12px 14px;
-    font-size: 16px;
-    text-decoration: none;
-    font-weight: 800;
-}
-
-.menuLink:visited {
+    padding: 10px 12px;
+    border-radius: 10px;
     color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
 }
 
 .menuLink:hover {
-    background: #f3f4f6;
+    background: #f2f4f7;
 }
 
-
-/* show desktop links on large screens if you want */
-@media (min-width: 720px) {
-
-    .menuBtn,
-    .menu {
-        display: none !important;
-    }
-
-    .navLinks {
-        display: flex;
-        gap: 10px;
-    }
-}
-
-/* ---------- BUTTONS ---------- */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 42px;
-    padding: 0 14px;
+    padding: 0 15px;
     border-radius: 12px;
+    border: 1px solid transparent;
     background: var(--primary);
     color: #fff;
-    font-weight: 800;
     text-decoration: none;
-    border: 1px solid transparent;
+    font-weight: 700;
+    cursor: pointer;
     white-space: nowrap;
-
-    /* IMPORTANT: removed your margin-top:15px (it was breaking header layout) */
 }
 
 .btn:hover {
@@ -220,7 +168,7 @@ h1 {
 .btn.ghost {
     background: #fff;
     color: var(--text);
-    border: 1px solid var(--border);
+    border-color: var(--border);
 }
 
 .muted {
@@ -228,67 +176,60 @@ h1 {
     margin: 0;
 }
 
-/* ---------- INPUTS ---------- */
 input,
-select {
+select,
+textarea,
+button {
+    font: inherit;
+}
+
+input,
+select,
+textarea {
     width: 100%;
-    height: 44px;
-    padding: 0 12px;
-    font-size: 16px;
     border: 1px solid var(--border);
     border-radius: 12px;
-    outline: none;
     background: #fff;
+    color: var(--text);
 }
 
-input:focus,
-select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(47, 158, 68, 0.15);
-}
-
-/* ---------- CARDS ---------- */
-.card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 14px;
-    box-shadow: 0 10px 28px rgba(17, 24, 39, 0.06);
-    margin-bottom: 14px;
-}
-
-@media (min-width: 900px) {
-    .container {
-        width: min(980px, 92vw);
-    }
+input,
+select {
+    height: 44px;
+    padding: 0 12px;
 }
 
 textarea {
-    width: 100%;
+    min-height: 120px;
     padding: 12px;
-    font-size: 16px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
     resize: vertical;
-    min-height: 110px;
-    font-family: inherit;
 }
 
+input:focus,
+select:focus,
 textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px rgba(47, 158, 68, 0.15);
+    outline: none;
+    border-color: #98a2b3;
+    box-shadow: 0 0 0 4px rgba(152, 162, 179, 0.2);
+}
+
+.card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    box-shadow: var(--shadow);
+}
+
+.footer {
+    margin-top: 20px;
+    color: var(--muted);
+    text-align: center;
 }
 
 .footer a {
     color: var(--primary);
-    font-weight: 600;
     text-decoration: none;
-    font-size: 14px;
-}
-
-.footer a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
+    font-weight: 600;
 }
 
 .loader {
@@ -296,16 +237,12 @@ textarea:focus {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
-    width: 40px;
-    height: 40px;
-
-    border: 4px solid #e5e7eb;
-    border-top: 4px solid #22c55e;
-
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-
+    width: 38px;
+    height: 38px;
+    border: 3px solid #e4e7ec;
+    border-top-color: var(--accent);
+    border-radius: 999px;
+    animation: spin 0.9s linear infinite;
     z-index: 9999;
 }
 
@@ -316,5 +253,41 @@ textarea:focus {
 @keyframes spin {
     to {
         transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@media (min-width: 860px) {
+    .menuBtn,
+    .menu {
+        display: none !important;
+    }
+
+    .navLinks {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .container {
+        padding: 28px 0 52px;
+    }
+
+    .topbar,
+    .appHeader {
+        padding: 16px 22px;
+        margin-bottom: 24px;
+    }
+
+    .logo {
+        width: 54px;
+        height: 54px;
+    }
+
+    h1 {
+        font-size: 1.55rem;
+    }
+
+    .subtitle {
+        font-size: 0.95rem;
     }
 }

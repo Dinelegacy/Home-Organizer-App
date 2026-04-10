@@ -1,38 +1,32 @@
-/* auth.css */
-
 .authWrap {
-    padding-top: 18px;
+    padding-top: 12px;
 }
 
-/* Card */
 .authCard {
     width: min(560px, 92vw);
     margin: 14px auto 0;
-    padding: 22px 18px;
+    padding: 24px 20px;
 }
 
-/* Header inside card */
 .authHeader h2 {
     margin: 0 0 6px;
-    font-size: 30px;
-    letter-spacing: -0.3px;
+    font-size: clamp(1.8rem, 2.2vw, 2.2rem);
+    letter-spacing: -0.02em;
 }
 
 .authSub {
     margin: 0 0 16px;
     color: var(--muted);
-    line-height: 1.35;
+    line-height: 1.45;
 }
 
-/* Form */
 .authForm {
     display: grid;
     gap: 14px;
 }
 
-/* Inline form message */
 .formMsg {
-    margin-top: 10px;
+    margin-top: 4px;
     font-size: 14px;
     font-weight: 700;
     display: none;
@@ -45,11 +39,14 @@
 
 .formMsg.error {
     color: #dc2626;
-
 }
 
 .formMsg.success {
     color: #2f9e44;
+}
+
+.formMsg.info {
+    color: #475467;
 }
 
 .field {
@@ -58,24 +55,23 @@
 }
 
 .field span {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text);
 }
 
 
-.field input {
-    width: 100%;
-}
-
-/* Full-width primary button */
 .btn.full {
     width: 100%;
-    height: 48px;
+    height: 46px;
     border-radius: 14px;
     font-size: 16px;
 }
 
-/* Footer text */
+.btn.full:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
 .authFoot {
     margin: 6px 0 0;
     text-align: center;
@@ -84,7 +80,7 @@
 
 .authFoot a {
     color: var(--primary);
-    font-weight: 800;
+    font-weight: 700;
     text-decoration: none;
 }
 
@@ -92,10 +88,9 @@
     text-decoration: underline;
 }
 
-/* Slightly bigger on larger screens */
 @media (min-width: 720px) {
     .authCard {
-        padding: 26px 22px;
+        padding: 28px 24px;
     }
 }
 
@@ -105,24 +100,6 @@
     left: 50%;
     bottom: 24px;
     transform: translateX(-50%) translateY(20px);
-    width: min(480px, 92vw);
-    padding: 14px 18px;
-    border-radius: 16px;
-    font-weight: 600;
-    font-size: 14px;
-    opacity: 0;
-    pointer-events: none;
-    transition: all .25s ease;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .15);
-    z-index: 9999;
-}
-
-/* show animation */
-.toast {
-    position: fixed;
-    left: 50%;
-    bottom: 24px;
-    transform: translateX(-50%) translateY(20px);
     width: auto;
     max-width: 90vw;
     padding: 10px 14px;
@@ -133,24 +110,6 @@
     pointer-events: none;
     transition: all .25s ease;
     z-index: 9999;
-}
-
-/* Toast (APP page) */
-.toast {
-    position: fixed;
-    left: 50%;
-    bottom: 24px;
-    transform: translateX(-50%) translateY(20px);
-    width: auto;
-    max-width: 90vw;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 14px;
-    opacity: 0;
-    pointer-events: none;
-    transition: all .25s ease;
-    z-index: 99999;
 }
 
 .toast.show {
@@ -159,14 +118,9 @@
 }
 
 .toast.success {
-    background: transparent !important;
-    color: #2f9e44 !important;
-    /* cart green */
-    box-shadow: none !important;
-    border: none !important;
+    color: #15803d;
 }
 
-/* error stays red box */
 .toast.error {
     background: #fef2f2;
     color: #b91c1c;
@@ -178,24 +132,28 @@
 }
 
 .passwordWrapper input {
-    padding-right: 44px;
-    /* space for eye */
+    padding-right: 72px;
 }
 
 .togglePassword {
     position: absolute;
-    right: 10px;
+    right: 8px;
     top: 50%;
     transform: translateY(-50%);
-    border: none;
-    background: transparent;
+    border: 1px solid #d0d5dd;
+    background: #f8fafc;
+    border-radius: 9px;
+    height: 28px;
+    min-width: 52px;
+    padding: 0 10px;
     cursor: pointer;
-    font-size: 18px;
-    opacity: 0.6;
+    font-size: 12px;
+    font-weight: 700;
+    color: #344054;
 }
 
 .togglePassword:hover {
-    opacity: 1;
+    background: #f2f4f7;
 }
 
 textarea {

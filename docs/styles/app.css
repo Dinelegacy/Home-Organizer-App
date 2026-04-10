@@ -1,0 +1,226 @@
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.grid .card {
+  padding: 18px;
+}
+
+.grid h2 {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.countBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: #344054;
+  background: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.formRow button {
+  min-width: 82px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.formRow button:hover {
+  background: var(--primary-hover);
+}
+
+#item-search,
+#meal-day {
+  margin-bottom: 10px;
+}
+
+.inlineMsg {
+  min-height: 20px;
+  margin: 4px 0 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.inlineMsg.success {
+  color: #15803d;
+}
+
+.inlineMsg.error {
+  color: #b91c1c;
+}
+
+.inlineMsg.info {
+  color: #475467;
+}
+
+#missing-list,
+#meal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.listContainer {
+  border: 1px solid #eaecf0;
+  border-radius: 12px;
+  background: #fcfcfd;
+  padding: 10px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.listContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+.listContainer::-webkit-scrollbar-thumb {
+  background: #d0d5dd;
+  border-radius: 999px;
+  border: 2px solid #fcfcfd;
+}
+
+#missing-list li,
+#meal-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+#missing-list li.emptyState,
+#meal-list li.emptyState {
+  justify-content: center;
+  text-align: center;
+  color: #667085;
+  font-size: 0.92rem;
+  padding: 16px 12px;
+  border-style: dashed;
+  background: #f8fafc;
+}
+
+#missing-list li span,
+#meal-list li span {
+  overflow-wrap: anywhere;
+}
+
+.iconBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.iconBtn:hover {
+  background: #fee2e2;
+}
+
+.appHeader .btn {
+  min-width: 88px;
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%) translateY(20px);
+  max-width: 92vw;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: #111827;
+  color: #fff;
+  font-size: 0.9rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .25s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast.success {
+  background: #14532d;
+}
+
+.toast.error {
+  background: #7f1d1d;
+}
+
+@media (min-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .grid .card {
+    min-height: 620px;
+    padding: 22px;
+  }
+
+  .listContainer {
+    max-height: 420px;
+  }
+
+  .grid h2 {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  #missing-list li,
+  #meal-list li {
+    padding: 14px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid .card {
+    min-height: 680px;
+  }
+
+  .listContainer {
+    max-height: 470px;
+  }
+}
