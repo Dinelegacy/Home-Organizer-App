@@ -206,6 +206,13 @@
   background: #7f1d1d;
 }
 
+.toast.info {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+  box-shadow: 0 10px 24px rgba(245, 158, 11, 0.2);
+}
+
 @media (min-width: 980px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
