@@ -57,16 +57,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
 
+    function handlePasswordToggle(btn, event) {
+        event.preventDefault();
+
+        const wrapper = btn.closest(".passwordWrapper");
+        const input = wrapper?.querySelector("input");
+        if (!input) return;
+
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        btn.textContent = isPassword ? "Hide" : "Show";
+        btn.setAttribute("aria-pressed", String(isPassword));
+        btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+    }
+
     document.querySelectorAll(".togglePassword").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const input = btn.parentElement.querySelector("input");
-            if (!input) return;
-            const isPassword = input.type === "password";
-            input.type = isPassword ? "text" : "password";
-            btn.textContent = isPassword ? "Hide" : "Show";
-            btn.setAttribute("aria-pressed", String(isPassword));
-            btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
-        });
+        btn.addEventListener("click", (event) => handlePasswordToggle(btn, event));
     });
 
     if (loginForm) {
