@@ -50,7 +50,7 @@ async function apiFetch(url, options = {}) {
   const wakeTimer = setTimeout(() => {
     const now = Date.now();
     if (now - lastWakeNoticeAt >= WAKE_COOLDOWN_MS) {
-      showToast("Server is waking up. First request can take up to 60 seconds.", "info");
+      showToast("Getting things ready. Please wait...", "info");
       lastWakeNoticeAt = now;
     }
   }, WAKE_DELAY_MS);

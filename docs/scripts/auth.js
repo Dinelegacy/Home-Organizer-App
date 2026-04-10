@@ -1,7 +1,7 @@
 import { API_BASE } from "./config.js";
 
 const WAKE_DELAY_MS = 2500;
-const WAKE_MESSAGE = "Server is waking up. First request can take up to 60 seconds.";
+const WAKE_MESSAGE = "Getting things ready. Please wait...";
 
 function setFormMsg(message = "", type = "") {
     const el = document.getElementById("formMsg");
