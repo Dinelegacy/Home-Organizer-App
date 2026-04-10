@@ -263,9 +263,18 @@ if (itemSearch) {
 }
 
 async function loadItems() {
-  const res = await apiFetch(ITEMS_URL);
+  let res;
+  try {
+    res = await apiFetch(ITEMS_URL);
+  } catch (err) {
+    list.innerHTML = `<li class="emptyState">Unable to load items. Please retry.</li>`;
+    if (itemsCount) itemsCount.style.display = "none";
+    return;
+  }
+
   if (!res.ok) {
-    list.innerHTML = `<li>${await readError(res)}</li>`;
+    list.innerHTML = `<li class="emptyState">${await readError(res)}</li>`;
+    if (itemsCount) itemsCount.style.display = "none";
     return;
   }
 
@@ -343,9 +352,16 @@ function setMealsMsg(text = "", type = "") {
 }
 
 async function loadMeals() {
-  const res = await apiFetch(MEALS_URL);
+  let res;
+  try {
+    res = await apiFetch(MEALS_URL);
+  } catch (err) {
+    mealList.innerHTML = `<li class="emptyState">Unable to load meals. Please retry.</li>`;
+    return;
+  }
+
   if (!res.ok) {
-    mealList.innerHTML = `<li>${await readError(res)}</li>`;
+    mealList.innerHTML = `<li class="emptyState">${await readError(res)}</li>`;
     return;
   }
 
