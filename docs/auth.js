@@ -57,21 +57,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.getElementById("loginForm");
     const registerForm = document.getElementById("registerForm");
 
+    function applyPasswordState(btn, input, isVisible) {
+        input.type = isVisible ? "text" : "password";
+        btn.textContent = isVisible ? "Hide" : "Show";
+        btn.setAttribute("aria-pressed", String(isVisible));
+        btn.setAttribute("aria-label", isVisible ? "Hide password" : "Show password");
+        btn.dataset.visible = isVisible ? "true" : "false";
+    }
+
     function handlePasswordToggle(btn, event) {
         event.preventDefault();
-
         const wrapper = btn.closest(".passwordWrapper");
         const input = wrapper?.querySelector("input");
         if (!input) return;
-
-        const isPassword = input.type === "password";
-        input.type = isPassword ? "text" : "password";
-        btn.textContent = isPassword ? "Hide" : "Show";
-        btn.setAttribute("aria-pressed", String(isPassword));
-        btn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+        const isVisible = btn.dataset.visible === "true";
+        applyPasswordState(btn, input, !isVisible);
     }
 
     document.querySelectorAll(".togglePassword").forEach((btn) => {
+        const wrapper = btn.closest(".passwordWrapper");
+        const input = wrapper?.querySelector("input");
+        if (input) applyPasswordState(btn, input, false);
         btn.addEventListener("click", (event) => handlePasswordToggle(btn, event));
     });
 
