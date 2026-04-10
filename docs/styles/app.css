@@ -22,18 +22,20 @@
 }
 
 .countBadge {
-  display: inline-flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 8px;
+  min-width: 34px;
+  height: 30px;
+  padding: 0 10px;
   border-radius: 999px;
-  border: 1px solid var(--border);
-  color: #344054;
-  background: #f8fafc;
-  font-size: 0.82rem;
-  font-weight: 700;
+  border: 1px solid #fed7aa;
+  color: #9a3412;
+  background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .formRow {
@@ -56,6 +58,11 @@
 
 .formRow button:hover {
   background: var(--primary-hover);
+}
+
+.formRow button:disabled {
+  opacity: 0.72;
+  cursor: not-allowed;
 }
 
 #item-search,
@@ -112,6 +119,7 @@
 
 #missing-list li,
 #meal-list li {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -120,6 +128,10 @@
   border: 1px solid var(--border);
   border-radius: 12px;
   background: #fff;
+}
+
+.swipeable {
+  touch-action: pan-y;
 }
 
 #missing-list li.emptyState,
@@ -152,6 +164,12 @@
 
 .iconBtn:hover {
   background: #fee2e2;
+}
+
+@media (max-width: 760px) {
+  .swipeable .iconBtn {
+    opacity: 0.85;
+  }
 }
 
 .appHeader .btn {

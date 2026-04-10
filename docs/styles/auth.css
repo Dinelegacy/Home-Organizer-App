@@ -156,6 +156,19 @@
     background: #f2f4f7;
 }
 
+@media (max-width: 420px) {
+    .passwordWrapper input {
+        padding-right: 66px;
+    }
+
+    .togglePassword {
+        min-width: 48px;
+        height: 27px;
+        padding: 0 8px;
+        font-size: 11px;
+    }
+}
+
 textarea {
     width: 100%;
     padding: 12px;

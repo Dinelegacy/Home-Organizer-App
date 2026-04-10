@@ -100,7 +100,6 @@ router.patch("/:id", authRequired, async (req, res) => {
       const cleanDay = getCleanDayOr400(req, res);
       if (!cleanDay) return;
 
-      // ✅ Prevent duplicate day for the same user (if another meal already uses this day)
       const existingDay = await mealsCollection(req).findOne({
         userId: req.user.userId,
         day: cleanDay,
