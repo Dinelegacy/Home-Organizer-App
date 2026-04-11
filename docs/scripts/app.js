@@ -30,7 +30,7 @@ const ITEMS_URL = `${API_BASE}/api/items`;
 const MEALS_URL = `${API_BASE}/api/meals`;
 
 const TOKEN = localStorage.getItem("token");
-if (!TOKEN) window.location.href = "login.html?v=4";
+if (!TOKEN) window.location.href = "login.html?v=5";
 
 function authHeaders(extra = {}) {
   return { Authorization: `Bearer ${TOKEN}`, ...extra };
@@ -69,7 +69,7 @@ async function apiFetch(url, options = {}) {
 
 document.getElementById("logoutBtn")?.addEventListener("click", () => {
   localStorage.removeItem("token");
-  window.location.href = "login.html?v=4";
+  window.location.href = "login.html?v=5";
 });
 
 const list = document.getElementById("missing-list");

@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const data = await res.json();
                 localStorage.setItem("token", data.token);
-                window.location.href = "app.html?v=4";
+                window.location.href = "app.html?v=5";
             } catch (err) {
                 setFormMsg("Cannot connect right now. Please wait a moment and try again.", "error");
                 resetSubmit();
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 setFormMsg("Account created. Please login", "success");
                 resetSubmit();
-                setTimeout(() => (window.location.href = "login.html?v=4"), 1500);
+                setTimeout(() => (window.location.href = "login.html?v=5"), 1500);
             } catch (err) {
                 setFormMsg("Cannot connect right now. Please wait a moment and try again.", "error");
                 resetSubmit();
